@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class CourierController extends Controller
+class HomeController extends Controller
 {
-    public function check(Request $request)
+    public function getFrodly(Request $request)
     {
         $request->validate([
             'phone' => 'required|regex:/^\d{11}$/'
@@ -293,4 +293,7 @@ class CourierController extends Controller
     {
         return ['success'=>0,'cancel'=>0,'total'=>0,'status'=>'success'];
     }
+
+
+    
 }
