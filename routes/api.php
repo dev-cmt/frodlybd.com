@@ -15,5 +15,5 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/refresh', [JwtAuthController::class, 'refresh']);
 });
 
-Route::post('/token/check-courier', [FrodlyController::class, 'checkManualy']);
+Route::post('/token/check-courier', [FrodlyController::class, 'checkManualy'])->middleware('token.valid');
 

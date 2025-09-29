@@ -23,12 +23,16 @@ class JwtAuthController extends Controller
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
-        $token = JWTAuth::fromUser($user);
+        // Check if api_token exists, else generate new
+        $token = $user->api_token ?? JWTAuth::fromUser($user);
+        $user->update([
+            'api_token' => $user->api_token ?? $token
+        ]);
 
         return response()->json([
-            'status' => true,
+            'status' => 200,
             'token' => $token,
-            'user' => $user
+            'user' => $user->only('name', 'email', 'phone')
         ]);
     }
 
@@ -49,11 +53,26 @@ class JwtAuthController extends Controller
         // Generate JWT token
         $token = JWTAuth::fromUser($user);
 
+        $user->update([
+            'api_token' => $token
+        ]);
+
         return response()->json([
-            'status' => true,
+            'status' => 200,
             'message' => 'User registered successfully',
-            'user' => $user,
+            'user' => $user->only('name', 'email', 'phone'),
             'token' => $token
         ]);
     }
+    public function logout()
+    {
+        JWTAuth::invalidate(JWTAuth::getToken());
+        return response()->json(['status' => true, 'message' => 'Logged out']);
+    }
+
+    public function refresh()
+    {
+        return response()->json(['status' => true, 'token' => JWTAuth::refresh(JWTAuth::getToken())]);
+    }
+
 }
