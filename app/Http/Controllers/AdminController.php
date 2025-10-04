@@ -12,7 +12,7 @@ class AdminController extends Controller
     public function dashboard()
     {
         $data['total_applications'] = User::count();
-        return view('backEnd.dashboard',compact('data'));
+        return view('backend.dashboard',compact('data'));
     }
 
 }

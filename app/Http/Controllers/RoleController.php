@@ -12,7 +12,7 @@ class RoleController extends Controller
     {
         $roles = Role::with('permissions')->paginate(10);
 
-        return view('backEnd.roles.index', compact('roles'));
+        return view('backend.roles.index', compact('roles'));
     }
 
     public function create()
@@ -26,7 +26,7 @@ class RoleController extends Controller
             return implode(' ', $parts); // remaining words = module
         });
 
-        return view('backEnd.roles.create', compact('groupedPermissions'));
+        return view('backend.roles.create', compact('groupedPermissions'));
     }
 
     public function store(Request $request)
@@ -55,7 +55,7 @@ class RoleController extends Controller
             return implode(' ', $parts); // module name
         });
 
-        return view('backEnd.roles.edit', compact('role', 'groupedPermissions'));
+        return view('backend.roles.edit', compact('role', 'groupedPermissions'));
     }
 
 

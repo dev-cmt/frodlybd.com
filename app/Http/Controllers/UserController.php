@@ -15,7 +15,7 @@ class UserController extends Controller
     {
         $users = User::with('roles')->latest()->paginate(10);
         $roles = Role::all();
-        return view('backEnd.users.index', compact('users', 'roles'));
+        return view('backend.users.index', compact('users', 'roles'));
     }
 
     // Update user

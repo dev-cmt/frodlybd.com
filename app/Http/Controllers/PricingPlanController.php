@@ -9,12 +9,12 @@ class PricingPlanController extends Controller
     public function index()
     {
         $plans = PricingPlan::all();
-        return view('backEnd.pricing.index', compact('plans'));
+        return view('backend.pricing.index', compact('plans'));
     }
 
     public function create()
     {
-        return view('backEnd.pricing.create');
+        return view('backend.pricing.create');
     }
 
     public function store(Request $request)
@@ -40,7 +40,7 @@ class PricingPlanController extends Controller
 
     public function edit(PricingPlan $pricingPlan)
     {
-        return view('backEnd.pricing.edit', compact('pricingPlan'));
+        return view('backend.pricing.edit', compact('pricingPlan'));
     }
 
     public function update(Request $request, PricingPlan $pricingPlan)
