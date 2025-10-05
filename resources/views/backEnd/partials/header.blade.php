@@ -34,11 +34,11 @@
                 <a href="#" class="header-link dropdown-toggle" id="mainHeaderProfile" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                     <div class="d-flex align-items-center">
                         <div class="me-sm-2 me-0">
-                            <img src="{{ Auth::user()->photo_path ? asset(Auth::user()->photo_path) : asset('uploads/profile-photo.jpg') }}" alt="img" width="32" height="32" class="rounded-circle object-fit-cover">
+                            <img src="{{ Auth::user()->photo_path ? asset(Auth::user()->photo_path) : asset('images/profile-photo.jpg') }}" alt="img" width="32" height="32" class="rounded-circle object-fit-cover">
                         </div>
                         <div class="d-sm-block d-none">
                             <p class="fw-semibold mb-0 lh-1">{{Auth::user()->name}}</p>
-                            <span class="op-7 fw-normal d-block fs-11">Admin</span>
+                            <span class="op-7 fw-normal d-block fs-11">{{ ucfirst(Auth::user()->getRoleNames()->first()) }}</span>
                         </div>
                     </div>
                 </a>

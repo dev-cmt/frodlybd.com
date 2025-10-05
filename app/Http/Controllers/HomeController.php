@@ -30,7 +30,11 @@ class HomeController extends Controller
             ['name' => 'Home', 'url' => url('/')],
         ]);
         return view('frontend.welcome', compact('seo_tags','breadcrumbs'));
-        // return view('frontend.welcome');
+    }
+
+    public function pageFrodly()
+    {
+        return view('frontend.frodly-checker');
     }
 
     public function getFrodly(Request $request)
@@ -49,13 +53,21 @@ class HomeController extends Controller
             'Paperfly'   => $this->getPaperfly($phone),
         ];
 
+        // Placeholder logos (or you can use public URLs)
+        $placeholderLogos = [
+            'redx'       => asset('frodly/courier-logo/redx.jpg'),
+            'steadfast'  => asset('frodly/courier-logo/steadfast.jpg'),
+            'pathao'     => asset('frodly/courier-logo/pathao.jpg'),
+            'paperfly'   => asset('frodly/courier-logo/paperfly.jpg'),
+        ];
+
         // Build summary
         $summaries = [];
         $total_all = $success_all = $cancel_all = 0;
 
         foreach ($results as $courier => $data) {
             $summaries[$courier] = [
-                'logo'    => config("courier.logos." . strtolower($courier), ''),
+                'logo'    => $placeholderLogos[strtolower($courier)] ?? '', // use placeholder
                 'total'   => $data['total'],
                 'success' => $data['success'],
                 'cancel'  => $data['cancel']
@@ -70,8 +82,8 @@ class HomeController extends Controller
             'status' => true,
             'message' => 'Courier info retrieved successfully.',
             'data' => [
-                'Summaries'   => $summaries,
-                'totalSummary'=> [
+                'Summaries'    => $summaries,
+                'totalSummary' => [
                     'total'       => $total_all,
                     'success'     => $success_all,
                     'cancel'      => $cancel_all,
@@ -81,6 +93,7 @@ class HomeController extends Controller
             ]
         ]);
     }
+
 
     // ------------------- REDX -------------------
     private function redxLogin(): ?string

@@ -119,7 +119,7 @@ class FrodlyController extends Controller
                 ]
             ]
         ]);
-        
+
     }
 
     // ------------------- REDX -------------------
@@ -165,13 +165,13 @@ class FrodlyController extends Controller
     {
         // $token = $this->redxLogin();
         // $token = config('frodly.steadfast.token_data');
-        
+
         $token = 'a47a79745b53b36afb14c782794c7dcdc691d09dd3161969fcfd732f18848b1df4bc87521e1cb9b9e27e528c052b42cbde3f6780abc861d8fdee8b55d8e6e9e6';
-        
+
         if (!$token) {
             return ['success' => 0, 'cancel' => 0, 'total' => 0];
         }
-        
+
         $ch = curl_init("https://redx.com.bd/api/redx_se/admin/parcel/customer-success-return-rate?phoneNumber=88$phone");
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
@@ -179,10 +179,10 @@ class FrodlyController extends Controller
         ]);
         $res = json_decode(curl_exec($ch), true);
         curl_close($ch);
-        
+
         $success = $res['data']['deliveredParcels'] ?? 0;
         $total = $res['data']['totalParcels'] ?? 0;
-    
+
         return [
             'success' => $success,
             'cancel'  => $total - $success,

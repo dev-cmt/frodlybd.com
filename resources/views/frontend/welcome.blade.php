@@ -51,7 +51,7 @@
 
                     <!-- CTA Buttons -->
                     <div class="cta-buttons">
-                        <a href="https://dash.hoorin.com/signup" class="btn btn-hero-primary">
+                        <a href="{{route('dashboard')}}" class="btn btn-hero-primary">
                             <i class="fas fa-play-circle"></i> বিনামূল্যে শুরু করুন
                         </a>
                         <a href="#services" class="btn btn-hero-secondary">

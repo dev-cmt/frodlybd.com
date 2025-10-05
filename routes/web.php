@@ -13,7 +13,8 @@ use App\Http\Controllers\DeveloperApiController;
 
 
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
-Route::get('/check', [HomeController::class, 'getFrodly']);
+// Route::get('/page/frodly', [HomeController::class, 'pageFrodly'])->name('page.frodly');
+Route::get('/get/frodly', [HomeController::class, 'getFrodly'])->name('get.frodly');
 
 // Admin dashboard
 Route::get('/dashboard', [AdminController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
