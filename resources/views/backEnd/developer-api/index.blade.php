@@ -6,7 +6,7 @@
     .code-block {
         position: relative;
         background: #1e1e1e;
-        color: #d4d4d4;
+        color: #ff0022;
         padding: 1rem;
         border-radius: 8px;
         font-family: Consolas, Monaco, monospace;

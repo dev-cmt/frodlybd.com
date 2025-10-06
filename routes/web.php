@@ -13,7 +13,7 @@ use App\Http\Controllers\DeveloperApiController;
 
 
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
-// Route::get('/page/frodly', [HomeController::class, 'pageFrodly'])->name('page.frodly');
+Route::get('/page/frodly', [HomeController::class, 'pageFrodly'])->name('page.frodly'); // Not used
 Route::get('/get/frodly', [HomeController::class, 'getFrodly'])->name('get.frodly');
 
 // Admin dashboard

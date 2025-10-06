@@ -36,7 +36,7 @@
 </div> --}}
 
 
-<section class="section pb-0 bg-primary pt-5 mt-3">
+<section class="bg-primary pt-2 mt-3">
     <div class="container main-banner-container">
         <div class="row justify-content-center text-center">
             <div class="col-xxl-7 col-xl-7 col-lg-8">
@@ -45,7 +45,7 @@
                     <h5 class="landing-banner-heading text-white mb-3"><span class="text-secondary fw-bold">600+ </span> Users in Bangladesh Rely on Frodly for Easy Parcel Return Management.</h5>
                     <!-- Search Form -->
                     <form class="mb-3 custom-form-group" id="searchForm">
-                        <input type="text" id="phoneInput" class="form-control form-control-lg shadow-sm" placeholder="01XXXXXXXXXX" aria-label="Phone number">
+                        <input type="text" id="phoneInput" class="form-control form-control-lg shadow-sm" placeholder="আপনার অর্ডার ডেলিভারি ডেটা দেখতে ফোন নাম্বার লিখুন এবং সার্চ করুন।" aria-label="Phone number">
                         <div class="custom-form-btn">
                             <button class="btn btn-primary border-0" type="submit" id="submit-btn"><i class="bi bi-search me-2"></i> Search</button>
                         </div>
@@ -56,7 +56,7 @@
     </div>
 </section>
 
-<div class="row mt-5">
+<div class="row">
     <div class="col-xl-12">
         <!-- Loading / Placeholder -->
         <div class="row justify-content-center mb-4">
@@ -69,69 +69,78 @@
                 </div>
             </div>
         </div>
-
-        <!-- Stats Cards -->
-        <div class="row mb-4" id="stats-cards" style="display:none">
-            @php
-                $cards = [
-                    ['title'=>'মোট অর্ডার','id'=>'totalOrders','icon'=>'ri-briefcase-2-line','bg'=>'primary'],
-                    ['title'=>'মোট ডেলিভারি','id'=>'totalSuccess','icon'=>'ri-wallet-2-line','bg'=>'success'],
-                    ['title'=>'মোট বাতিল','id'=>'totalCancel','icon'=>'ri-profile-line','bg'=>'danger'],
-                    ['title'=>'সফলতার হার','id'=>'successRate','icon'=>'ri-line-chart-line','bg'=>'info'],
-                    ['title'=>'বাতিল হার','id'=>'cancelRate','icon'=>'ri-money-dollar-box-line','bg'=>'warning'],
-                    ['title'=>'রিস্ক লেভেল','id'=>'riskLabel','icon'=>'ri-bill-line','bg'=>'secondary'],
-                ];
-            @endphp
-            @foreach($cards as $card)
-            <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
-                <div class="card custom-card border-top-card border-top-{{ $card['bg'] }}">
-                    <div class="card-body text-center">
-                        <span class="avatar avatar-md bg-{{ $card['bg'] }} shadow-sm avatar-rounded mb-2">
-                            <i class="{{ $card['icon'] }} fs-16"></i>
-                        </span>
-                        <p class="fs-14 fw-semibold mb-2">{{ $card['title'] }}</p>
-                        <h5 class="mb-0 fw-semibold" id="{{ $card['id'] }}">0</h5>
+        <div class="row">
+            <div class="col-12">
+                <!-- Stats Cards -->
+                <div class="row" id="stats-cards" style="display:none">
+                    @php
+                        $cards = [
+                            ['title'=>'সফলতার হার','id'=>'successRate','icon'=>'ri-line-chart-line','bg'=>'info'],
+                            ['title'=>'মোট অর্ডার','id'=>'totalOrders','icon'=>'ri-briefcase-2-line','bg'=>'primary'],
+                            ['title'=>'মোট ডেলিভারি','id'=>'totalSuccess','icon'=>'ri-wallet-2-line','bg'=>'success'],
+                            ['title'=>'মোট বাতিল','id'=>'totalCancel','icon'=>'ri-profile-line','bg'=>'danger'],
+                            // ['title'=>'বাতিল হার','id'=>'cancelRate','icon'=>'ri-money-dollar-box-line','bg'=>'warning'],
+                            // ['title'=>'রিস্ক লেভেল','id'=>'riskLabel','icon'=>'ri-bill-line','bg'=>'secondary'],
+                        ];
+                    @endphp
+                    @foreach($cards as $card)
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="card custom-card border-top-card border-top-{{ $card['bg'] }}">
+                            <div class="card-body text-center">
+                                <span class="avatar avatar-md bg-{{ $card['bg'] }} shadow-sm avatar-rounded mb-2">
+                                    <i class="{{ $card['icon'] }} fs-16"></i>
+                                </span>
+                                <p class="fs-14 fw-semibold mb-2">{{ $card['title'] }}</p>
+                                <h5 class="mb-0 fw-semibold" id="{{ $card['id'] }}">0</h5>
+                            </div>
+                        </div>
                     </div>
+                    @endforeach
+
                 </div>
+                <!-- End Cards -->
             </div>
-            @endforeach
-        </div>
+            <div class="col-12">
+                <!-- Chart & Table -->
+                <div class="row" id="content-data" style="display:none">
 
-        <!-- Chart & Table -->
-        <div class="row" id="content-data" style="display:none">
-            <div class="col-md-3 mb-3">
-                <div class="card custom-card text-center">
-                    <div class="card-header">
-                        <div class="card-title">Delivery Success Ratio</div>
+                    <div class="col-lg-9 col-md-8 col-sm-12">
+                        <div class="card custom-card">
+                            <div class="card-header">
+                                <div class="card-title text-uppercase">Frodly Details</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover text-center middle-align-table">
+                                        <thead class="table-primary text-uppercase">
+                                            <tr>
+                                                <th class="text-start">কুরিয়ার</th>
+                                                <th>অর্ডার</th>
+                                                <th>ডেলিভারি</th>
+                                                {{-- <th>বাতিল</th> --}}
+                                                <th>সফলতার হার</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="courierTableBody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <canvas id="successChart" width="150" height="150"></canvas>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-md-9 mb-3">
-                <div class="card custom-card">
-                    <div class="card-header">
-                        <div class="card-title text-uppercase">Details</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover">
-                                <thead class="table-primary text-uppercase">
-                                    <tr>
-                                        <th>কুরিয়ার</th>
-                                        <th>অর্ডার</th>
-                                        <th>ডেলিভারি</th>
-                                        <th>বাতিল</th>
-                                        <th>বাতিল হার</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="courierTableBody"></tbody>
-                            </table>
+                    <div class="col-lg-3 col-md-4 col-sm-12">
+                        <div class="card custom-card text-center">
+                            {{-- <div class="card-header">
+                                <div class="card-title">Delivery Success Ratio</div>
+                            </div> --}}
+                            <div class="card-body">
+                                <canvas id="successChart" width="150" height="150"></canvas>
+                                <span class="badge bg-success fw-bold" id="riskLabel">Great Customer</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- End Chart & Table -->
             </div>
         </div>
 
@@ -179,13 +188,13 @@ $(function() {
 
             // Table
             $('#courierTableBody').html(Object.entries(Summaries).map(([courier, data]) => {
-                let cancelRate = data.total > 0 ? ((data.cancel / data.total) * 100).toFixed(1) : '0.0';
+                let cancelRate = data.total > 0 ? ((data.success / data.total) * 100).toFixed(1) : '0.0';
                 return `<tr>
-                    <td><img src="${data.logo}" alt="${courier}" style="height:32px;margin-right:6px;vertical-align:middle;"></td>
+                    <td class="text-start"><img src="${data.logo}" alt="${courier}" style="height:42px"></td>
                     <td>${data.total}</td>
                     <td>${data.success}</td>
-                    <td>${data.cancel}</td>
-                    <td><span class="${cancelRate > 30 ? 'badge bg-danger fw-bold' : 'badge bg-success fw-bold'}">${cancelRate}%</span></td>
+                    <!-- <td>${data.cancel}</td>-->
+                    <td><span class="${cancelRate < 30 ? 'badge bg-danger fw-bold' : 'badge bg-success fw-bold'}">${cancelRate}%</span></td>
                 </tr>`;
             }).join(''));
 
@@ -206,8 +215,8 @@ $(function() {
         const courierNames = Object.keys(summaries);
         const courierSuccess = courierNames.map(courier => summaries[courier].success);
         const colors = [
-            '#007bff', '#28a745', '#ffc107', '#dc3545', '#17a2b8',
-            '#6610f2', '#fd7e14', '#6f42c1', '#20c997', '#e83e8c'
+            '#e83e8c', '#6f42c1', '#20c997', '#dc3545', '#ffc107',
+            '#007bff', '#fd7e14', '#6610f2', '#28a745', '#17a2b8'
         ];
 
         chartInstance = new Chart(ctx, {
