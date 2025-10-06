@@ -1,6 +1,14 @@
-@extends('backEnd.layouts.master')
+@extends('backend.layouts.master')
 @section('title', 'Users Management')
-
+@push('css')
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        .select2-container--open {
+            z-index: 100000 !important;
+        }
+    </style>
+@endpush
 @section('content')
 <!-- Page Header -->
 <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
@@ -43,7 +51,7 @@
                         </thead>
                         <tbody>
                             @forelse($users as $key => $user)
-                            <tr>
+                            <tr class="{{ $user->id == 1 ? 'd-none' : ''}}">
                                 <td>{{ ++$key }}</td>
                                 <td>
                                     @if($user->photo_path)
@@ -117,7 +125,8 @@
                         </div>
                         <div class="col-md-6">
                             <label for="edit_role" class="form-label">Role</label>
-                            <select class="form-select" id="edit_role" name="role" required>
+                            <select class="form-select select2" id="edit_role" name="role">
+                                <option value="" disabled selected>Select role</option>
                                 @foreach($roles as $role)
                                     <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
                                 @endforeach
@@ -143,25 +152,46 @@
 @endsection
 
 @push('js')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-    // Populate edit modal with user data
-    $(document).on('click', '.edit-user', function() {
-        const id = $(this).data('id');
-        const name = $(this).data('name');
-        const email = $(this).data('email');
-        const role = $(this).data('role');
-        const photo = $(this).data('photo');
-
-        $('#edit_id').val(id);
-        $('#edit_name').val(name);
-        $('#edit_email').val(email);
-        $('#edit_role').val(role);
-
-        if(photo) {
-            $('#current_photo_preview').html(`<img src="{{ asset('/') }}${photo}" alt="photo" class="rounded-circle" width="40" height="40">`);
-        } else {
-            $('#current_photo_preview').html('');
+    $(document).ready(function(){
+        // Initialize Select2
+        function initSelect2() {
+            $('select.select2').select2({
+                placeholder: "Select role", // placeholder text
+                allowClear: true,
+                width: '100%',
+                dropdownParent: $('#editUserModal') // fixes modal dropdown issue
+            });
         }
+        initSelect2();
+
+        // Populate edit modal with user data
+        $(document).on('click', '.edit-user', function() {
+            const id = $(this).data('id');
+            const name = $(this).data('name');
+            const email = $(this).data('email');
+            const role = $(this).data('role'); // may be empty
+            const photo = $(this).data('photo');
+
+            $('#edit_id').val(id);
+            $('#edit_name').val(name);
+            $('#edit_email').val(email);
+
+            // Set role value for Select2
+            if(role) {
+                $('#edit_role').val(role).trigger('change');
+            } else {
+                $('#edit_role').val(null).trigger('change'); // show placeholder
+            }
+
+            if(photo) {
+                $('#current_photo_preview').html(`<img src="{{ asset('/') }}${photo}" alt="photo" class="rounded-circle" width="40" height="40">`);
+            } else {
+                $('#current_photo_preview').html('');
+            }
+        });
     });
 </script>
+
 @endpush

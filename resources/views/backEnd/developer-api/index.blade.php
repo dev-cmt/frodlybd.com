@@ -1,4 +1,4 @@
-@extends('backEnd.layouts.master')
+@extends('backend.layouts.master')
 @section('title', 'Developer API')
 
 @push('css')
@@ -13,6 +13,7 @@
         margin-bottom: 1.5rem;
         overflow-x: auto;
         font-size: 14px;
+        white-space: pre-wrap;
     }
     .copy-btn {
         position: absolute;
@@ -37,23 +38,6 @@
     }
     .api-card { margin-bottom: 2rem; }
     .api-card-header { background: #f8f9fa; font-weight: 600; }
-    /* Quick links styling */
-    .quick-links {
-        position: sticky;
-        top: 20px;
-    }
-    .quick-links h5 { font-weight: 600; margin-bottom: 10px; }
-    .quick-links ul { padding-left: 0; }
-    .quick-links li { margin-bottom: 5px; }
-    .quick-links button {
-        color: #0d6efd;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        font-size: 14px;
-    }
-    .quick-links button:hover { text-decoration: underline; }
 </style>
 @endpush
 
@@ -92,51 +76,52 @@
                 </form>
 
                 <!-- Quick Links -->
-                <div class="mt-4 quick-links">
-                    <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
-                        <li><button type="button" onclick="scrollToSection('register')">Register</button></li>
-                        <li><button type="button" onclick="scrollToSection('login')">Login</button></li>
-                        <li><button type="button" onclick="scrollToSection('check-courier')">Check Courier</button></li>
-                        <li><button type="button" onclick="scrollToSection('token-check-courier')">Token Check Courier</button></li>
-                    </ul>
+                <div class="mt-4">
+                    <label class="form-label fw-bold">Quick Links</label>
+                    <div id="list-example" class="list-group">
+                        <a class="list-group-item list-group-item-action" href="#register">Register</a>
+                        <a class="list-group-item list-group-item-action" href="#login">Login</a>
+                        <a class="list-group-item list-group-item-action" href="#check-courier">Check Courier</a>
+                        <a class="list-group-item list-group-item-action" href="#token-check-courier">Token Check Courier</a>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
-
     <!-- API Documentation Section -->
-    <div class="col-xl-8 d-flex flex-column" style="height: 100vh; overflow-y: auto; padding-right: 15px;">
-        <h4 class="section-title mb-4">API Documentation</h4>
+    <div class="col-xl-8">
+        <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" tabindex="0" style="height: calc(100vh - 130px); overflow-y: auto;">
+            <h4 class="section-title mb-4">API Documentation</h4>
 
-        {{-- Base URL --}}
-        <div class="card api-card">
-            <div class="card-header api-card-header">Base URL</div>
-            <div class="card-body">
-                <div class="code-block"><code>https://frodlybd.com</code></div>
+            {{-- Base URL --}}
+            <div class="card api-card">
+                <div class="card-header api-card-header">Base URL</div>
+                <div class="card-body">
+                    <div class="code-block">
+    <pre>https://frodlybd.com</pre>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        {{-- Register --}}
-        <div class="card api-card" id="register">
-            <div class="card-header api-card-header">1️⃣ Register</div>
-            <div class="card-body">
-                <p><strong>POST:</strong> <code>{base_url}/api/register</code></p>
-                <h6>Request JSON</h6>
-                <div class="code-block">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-<code>{
+            {{-- Register --}}
+            <div class="card api-card" id="register">
+                <div class="card-header api-card-header">1️⃣ Register</div>
+                <div class="card-body">
+                    <p><strong>POST:</strong> <code>{base_url}/api/register</code></p>
+                    <h6>Request JSON</h6>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>{
     "name": "John Doe",
     "email": "john@example.com",
     "password": "123456",
     "password_confirmation": "123456"
-}</code>
-                </div>
-                <h6>Response</h6>
-                <div class="code-block">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-<code>{
+}</pre>
+                    </div>
+                    <h6>Response</h6>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>{
     "status": true,
     "message": "User registered successfully",
     "user": {
@@ -147,28 +132,28 @@
         "id": 2
     },
     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
-}</code>
+}</pre>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        {{-- Login --}}
-        <div class="card api-card" id="login">
-            <div class="card-header api-card-header">2️⃣ Login</div>
-            <div class="card-body">
-                <p><strong>POST:</strong> <code>{base_url}/api/login</code></p>
-                <h6>Request JSON</h6>
-                <div class="code-block">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-<code>{
+            {{-- Login --}}
+            <div class="card api-card" id="login">
+                <div class="card-header api-card-header">2️⃣ Login</div>
+                <div class="card-body">
+                    <p><strong>POST:</strong> <code>{base_url}/api/login</code></p>
+                    <h6>Request JSON</h6>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>{
     "email": "admin@gmail.com",
     "password": "admin1234"
-}</code>
-                </div>
-                <h6>Response</h6>
-                <div class="code-block">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-<code>{
+}</pre>
+                    </div>
+                    <h6>Response</h6>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>{
     "status": true,
     "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
     "user": {
@@ -179,26 +164,26 @@
         "created_at": "2025-09-27T19:39:02.000000Z",
         "updated_at": "2025-09-27T19:39:02.000000Z"
     }
-}</code>
+}</pre>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        {{-- Check Courier with Bearer Token --}}
-        <div class="card api-card" id="check-courier">
-            <div class="card-header api-card-header">3️⃣ Check Courier (Bearer Token)</div>
-            <div class="card-body">
-                <p><strong>POST:</strong> <code>{base_url}/api/check-courier</code></p>
-                <p>Headers: <code>Authorization: Bearer {token}</code></p>
-                <h6>Request JSON</h6>
-                <div class="code-block">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-<code>{ "phone": "01712345678" }</code>
-                </div>
-                <h6>Response</h6>
-                <div class="code-block">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-<code>{
+            {{-- Check Courier (Bearer Token) --}}
+            <div class="card api-card" id="check-courier">
+                <div class="card-header api-card-header">3️⃣ Check Courier (Bearer Token)</div>
+                <div class="card-body">
+                    <p><strong>POST:</strong> <code>{base_url}/api/check-courier</code></p>
+                    <p>Headers: <code>Authorization: Bearer {token}</code></p>
+                    <h6>Request JSON</h6>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>{ "phone": "01712345678" }</pre>
+                    </div>
+                    <h6>Response</h6>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>{
     "status": true,
     "message": "Courier info retrieved successfully.",
     "data": {
@@ -210,30 +195,34 @@
         },
         "totalSummary": {"total": 33,"success": 30,"cancel": 3,"successRate": 91,"cancelRate": 9}
     }
-}</code>
+}</pre>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        {{-- Check Courier with API Token Header --}}
-        <div class="card api-card" id="token-check-courier">
-            <div class="card-header api-card-header">4️⃣ Check Courier (API Token Header)</div>
-            <div class="card-body">
-                <p><strong>POST:</strong> <code>{base_url}/api/token/check-courier</code></p>
-                <p>Headers:</p>
-                <ul>
-                    <li><code>X-API-TOKEN: 1234567890abcdef</code></li>
-                    <li><code>Content-Type: application/json</code></li>
-                </ul>
-                <h6>Request JSON</h6>
-                <div class="code-block">
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-<code>{ "phone": "01712345678" }</code>
+            {{-- Check Courier (API Token Header) --}}
+            <div class="card api-card" id="token-check-courier">
+                <div class="card-header api-card-header">4️⃣ Check Courier (API Token Header)</div>
+                <div class="card-body">
+                    <p><strong>POST:</strong> <code>{base_url}/api/token/check-courier</code></p>
+                    <p>Headers:</p>
+                    <ul>
+                        <li><code>X-API-TOKEN: 1234567890abcdef</code></li>
+                        <li><code>Content-Type: application/json</code></li>
+                    </ul>
+                    <h6>Request JSON</h6>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre>{ "phone": "01712345678" }</pre>
+                    </div>
                 </div>
             </div>
-        </div>
 
+
+
+        </div>
     </div>
+
 </div>
 
 <!-- Toast -->
@@ -275,7 +264,7 @@
     }
 
     function copyCode(btn) {
-        const code = btn.parentElement.querySelector('code').innerText;
+        const code = btn.parentElement.querySelector('pre').innerText;
         navigator.clipboard.writeText(code).then(() => showToast('Code copied!'));
     }
 

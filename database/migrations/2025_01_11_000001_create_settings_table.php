@@ -18,10 +18,6 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('address')->nullable();
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            $table->text('success_text')->nullable();
-            $table->text('fb_pixel_code')->nullable();
             $table->timestamps();
         });
     }

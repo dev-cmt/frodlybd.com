@@ -1,4 +1,4 @@
-@extends('backEnd.layouts.master')
+@extends('backend.layouts.master')
 @section('title', 'Edit Pricing Plan')
 
 @section('content')

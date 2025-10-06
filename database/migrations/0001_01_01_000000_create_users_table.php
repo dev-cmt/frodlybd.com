@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('profile_photo_path')->nullable();
+            $table->string('photo_path')->nullable();
             $table->text('api_token')->nullable();
             $table->boolean('status')->default(true);
             $table->rememberToken();

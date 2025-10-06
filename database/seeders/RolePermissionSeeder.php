@@ -15,6 +15,7 @@ class RolePermissionSeeder extends Seeder
     {
         // -------------------------------
         // 1️⃣ Reset Roles & Permissions (keep users)
+        // php artisan db:seed --class=RolePermissionSeeder
         // -------------------------------
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('role_has_permissions')->truncate();
@@ -72,20 +73,20 @@ class RolePermissionSeeder extends Seeder
         // 6️⃣ Assign Roles to Default Users
         // -------------------------------
         $superAdmin = User::firstOrCreate(
-            ['email' => 'superadmin@gmail.com'],
-            ['name' => 'Super Admin', 'password' => Hash::make('superadmin123')]
+            ['email' => 'super@gmail.com'],
+            ['name' => 'Super Admin', 'password' => 'super12345']
         );
         $superAdmin->syncRoles([$superAdminRole]);
 
         $admin = User::firstOrCreate(
             ['email' => 'admin@gmail.com'],
-            ['name' => 'Admin User', 'password' => Hash::make('admin12345')]
+            ['name' => 'Admin User', 'password' => 'admin12345']
         );
         $admin->syncRoles([$adminRole]);
 
         $customer = User::firstOrCreate(
             ['email' => 'customer@gmail.com'],
-            ['name' => 'Customer User', 'password' => Hash::make('customer12345')]
+            ['name' => 'Customer User', 'password' => 'customer12345']
         );
         $customer->syncRoles([$customerRole]);
 

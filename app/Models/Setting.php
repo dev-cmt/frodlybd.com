@@ -15,9 +15,5 @@ class Setting extends Model
         'phone',
         'email',
         'address',
-        'title',
-        'description',
-        'success_text',
-        'fb_pixel_code',
     ];
 }

@@ -1,4 +1,4 @@
-@extends('backEnd.layouts.master')
+@extends('backend.layouts.master')
 @section('title', 'Create Role & Permissions')
 @push('css')
     <style>

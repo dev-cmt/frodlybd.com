@@ -33,7 +33,7 @@ class UserController extends Controller
 
         // Upload new photo if provided
         if ($request->hasFile('photo')) {
-            $photoPath = ImageHelper::uploadImage($request->file('photo'), 'uploads/users', $user->photo_path);
+            $photoPath = ImageHelper::uploadImage($request->file('photo'), 'uploads/profile', $user->photo_path);
             $user->photo_path = $photoPath;
         }
 

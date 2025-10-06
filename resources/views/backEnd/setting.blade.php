@@ -1,4 +1,4 @@
-@extends('backEnd.layouts.master')
+@extends('backend.layouts.master')
 @section('title')
     Settings
 @endsection
@@ -39,40 +39,12 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <label for="phone" class="form-label">Phone</label>
-                                <input type="number" name="phone" class="form-control" id="phone"
-                                       value="{{ $settings ? $settings->phone : '' }}">
+                                <input type="number" name="phone" class="form-control" id="phone" value="{{ $settings ? $settings->phone : '' }}">
                             </div>
                         </div>
                         <div class="col-md-12">
                             <label class="form-label" for="address">Address</label>
-                            <textarea name="address" id="address" class="form-control">{{ $settings ? $settings->address : '' }}</textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card custom-card mb-3">
-                    <div class="card-header justify-content-between">
-                        <div class="card-title">
-                            Page Setting
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12 mb-3">
-                                <label for="title" class="form-label">Home Page Title</label>
-                                <input type="text" name="title" class="form-control" id="title"
-                                       value="{{ $settings ? $settings->title : '' }}">
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="description" class="form-label">Home Page Description</label>
-                                <textarea name="description" id="description" class="form-control summernote"
-                                          rows="5">{!! $settings ? $settings->description : '' !!}</textarea>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="success_text" class="form-label">Success Page Text</label>
-                                <textarea name="success_text" id="success_text" class="form-control summernote"
-                                          rows="5">{!! $settings ? $settings->success_text : '' !!}</textarea>
-                            </div>
+                            <textarea name="address" id="address" rows="3" class="form-control">{{ $settings ? $settings->address : '' }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -81,15 +53,12 @@
 
                 <div class="card custom-card">
                     <div class="card-header justify-content-between">
-                        <div class="card-title">
-                            Logo
-                        </div>
+                        <div class="card-title">Logo</div>
                     </div>
                     <div class="card-body">
                         @if ($settings)
                             @if ($settings->logo)
-                                <img class="mb-2" src="{{ asset($settings->logo) }}" alt="{{ $settings->logo }}"
-                                     width="50">
+                                <img class="mb-2" src="{{ asset($settings->logo) }}" alt="{{ $settings->logo }}" width="50">
                             @endif
                         @endif
                         <input type="file" name="logo" class="form-control">
@@ -97,44 +66,19 @@
                 </div>
                 <div class="card custom-card">
                     <div class="card-header justify-content-between">
-                        <div class="card-title">
-                            Favicon
-                        </div>
+                        <div class="card-title">Favicon </div>
                     </div>
                     <div class="card-body">
                         @if ($settings)
                             @if ($settings->favicon)
-                                <img class="mb-2" src="{{ asset($settings->favicon) }}" alt="{{ $settings->favicon }}"
-                                     width="50">
+                                <img class="mb-2" src="{{ asset($settings->favicon) }}" alt="{{ $settings->favicon }}" width="50">
                             @endif
                         @endif
                         <input type="file" name="favicon" class="form-control">
                     </div>
                 </div>
-                <div class="card custom-card mb-3">
-                    <div class="card-header justify-content-between">
-                        <div class="card-title">
-                            Facebook Pixel
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-12 col-12 mb-3">
-                                <label class="form-label" for="fb_pixel_code">Facebook Pixel Code</label>
-                                <textarea name="fb_pixel_code" id="fb_pixel_code" class="form-control" rows="10">{!! $settings->fb_pixel_code ?? '' !!}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card custom-card">
-                    <div class="card-header justify-content-between">
-                        <div class="card-title">
-                            Action
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <button type="submit" class="btn btn-success">Update</button>
-                    </div>
+                <div class="mt-0">
+                    <button type="submit" class="btn btn-success w-100">Update</button>
                 </div>
             </div>
         </div>

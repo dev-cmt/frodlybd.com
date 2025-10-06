@@ -1,14 +1,13 @@
-@extends('backEnd.layouts.master')
+@extends('backend.layouts.master')
 
 @section('title', 'Dashboard')
-
 @push('css')
 <style>
     .logo_brand {
         font-size: 44px;
         font-weight: bold;
         font-family: 'Segoe UI', sans-serif;
-        background: linear-gradient(270deg, #ff0000, #ff8c00, #01cf23);
+        background: linear-gradient(270deg, #f1f1f1, #00fff2, #00f128);
         background-size: 600% 600%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -20,48 +19,45 @@
     @keyframes gradientMove {
         0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}
     }
-    @keyframes slideLR {
-        0%{left:0;}50%{left:calc(100% - 35px);}100%{left:0;}
-    }
-
-    /* Stats Cards */
-    .custom-card { border-radius: 6px; }
-    .border-top-card { border-top-width: 4px !important; }
-    .card-body .avatar { display: inline-flex; align-items: center; justify-content: center; }
-
-    /* Table */
-    table th, table td { vertical-align: middle !important; }
-    .table-striped tbody tr:nth-of-type(odd) { background-color: #f8f9fa; }
 </style>
 @endpush
 
 @section('content')
-<div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
+{{-- <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
     <h1 class="page-title fw-semibold fs-18 mb-0">
-        Welcome {{ Auth::user()->name }} ({{ ucfirst(Auth::user()->getRoleNames()->first()) }} Dashboard)
+        Welcome {{ Auth::user()->name }}
+        ({{ ucfirst(Auth::user()->getRoleNames()->first()) }} Dashboard)
     </h1>
     <nav>
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
         </ol>
     </nav>
-</div>
+</div> --}}
 
-<div class="row mb-5">
-    <div class="col-xl-12">
-        <h1 class="logo_brand">Frodly</h1>
-        <p class="text-center text-muted">পার্সেল রিটার্ন এর পরিমাপ করুন</p>
 
-        <!-- Search Form -->
-        <div class="row justify-content-center my-4">
-            <div class="col-md-8">
-                <form class="d-flex" id="searchForm">
-                    <input type="text" class="form-control form-control-lg me-2" id="phoneInput" placeholder="01XXXXXXXXXX">
-                    <button class="btn btn-primary" type="submit" id="submit-btn">Frodly Report</button>
-                </form>
+<section class="section pb-0 bg-primary pt-5 mt-3">
+    <div class="container main-banner-container">
+        <div class="row justify-content-center text-center">
+            <div class="col-xxl-7 col-xl-7 col-lg-8">
+                <div class="">
+                    <h1 class="logo_brand">Frodly</h1>
+                    <h5 class="landing-banner-heading text-white mb-3"><span class="text-secondary fw-bold">600+ </span> Users in Bangladesh Rely on Frodly for Easy Parcel Return Management.</h5>
+                    <!-- Search Form -->
+                    <form class="mb-3 custom-form-group" id="searchForm">
+                        <input type="text" id="phoneInput" class="form-control form-control-lg shadow-sm" placeholder="01XXXXXXXXXX" aria-label="Phone number">
+                        <div class="custom-form-btn">
+                            <button class="btn btn-primary border-0" type="submit" id="submit-btn"><i class="bi bi-search me-2"></i> Search</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
+    </div>
+</section>
 
+<div class="row mt-5">
+    <div class="col-xl-12">
         <!-- Loading / Placeholder -->
         <div class="row justify-content-center mb-4">
             <div class="col-md-3 text-center">
@@ -110,13 +106,9 @@
                     </div>
                     <div class="card-body">
                         <canvas id="successChart" width="150" height="150"></canvas>
-                        <div class="mt-2">
-                            <span id="successChartValue" class="fs-18 fw-bold">0%</span>
-                        </div>
                     </div>
                 </div>
             </div>
-
 
             <div class="col-md-9 mb-3">
                 <div class="card custom-card">
@@ -143,10 +135,7 @@
             </div>
         </div>
 
-        <!-- Animated Line -->
-        <div style="width:100%; height:2px; background:#ddd; margin:20px 0; position:relative; overflow:hidden;">
-            <span style="display:inline-block; width:35px; height:2px; background:#007bff; position:absolute; top:0; left:0; animation: slideLR 8s infinite ease-in-out;"></span>
-        </div>
+
     </div>
 </div>
 @endsection
@@ -192,15 +181,16 @@ $(function() {
             $('#courierTableBody').html(Object.entries(Summaries).map(([courier, data]) => {
                 let cancelRate = data.total > 0 ? ((data.cancel / data.total) * 100).toFixed(1) : '0.0';
                 return `<tr>
-                    <td><img src="${data.logo}" alt="${courier}" style="height:32px;margin-right:6px;vertical-align:middle;"> ${courier}</td>
+                    <td><img src="${data.logo}" alt="${courier}" style="height:32px;margin-right:6px;vertical-align:middle;"></td>
                     <td>${data.total}</td>
                     <td>${data.success}</td>
                     <td>${data.cancel}</td>
-                    <td class="${cancelRate > 30 ? 'text-danger fw-bold' : 'text-success fw-bold'}">${cancelRate}%</td>
+                    <td><span class="${cancelRate > 30 ? 'badge bg-danger fw-bold' : 'badge bg-success fw-bold'}">${cancelRate}%</span></td>
                 </tr>`;
             }).join(''));
 
-            animateChart(totalSummary.successRate);
+            // Animate chart with courier breakdown
+            animateChart(totalSummary, Summaries);
         }).fail(() => {
             alert('API কল ব্যর্থ হয়েছে');
             $('#loading-screen').hide();
@@ -208,35 +198,66 @@ $(function() {
         });
     });
 
-    function animateChart(finalValue) {
+    // Multi-courier chart with center text
+    function animateChart(totalSummary, summaries) {
         const ctx = document.getElementById('successChart').getContext('2d');
         if (chartInstance) chartInstance.destroy();
+
+        const courierNames = Object.keys(summaries);
+        const courierSuccess = courierNames.map(courier => summaries[courier].success);
+        const colors = [
+            '#007bff', '#28a745', '#ffc107', '#dc3545', '#17a2b8',
+            '#6610f2', '#fd7e14', '#6f42c1', '#20c997', '#e83e8c'
+        ];
 
         chartInstance = new Chart(ctx, {
             type: 'doughnut',
             data: {
+                labels: courierNames,
                 datasets: [{
-                    data: [finalValue, 100 - finalValue],
-                    backgroundColor: [
-                        finalValue < 50 ? '#e63946' : finalValue < 75 ? '#ffb703' : '#00b606',
-                        '#f1f1f1'
-                    ],
-                    borderWidth: 0
+                    label: 'Success Orders',
+                    data: courierSuccess,
+                    backgroundColor: colors.slice(0, courierNames.length),
+                    borderWidth: 2,
+                    borderColor: '#fff'
                 }]
             },
             options: {
-                cutout: '75%',
+                cutout: '70%',
                 plugins: {
-                    legend: { display: false },
-                    tooltip: { enabled: false }
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 15,
+                            font: { size: 12 }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (tooltipItem) => {
+                                let courier = tooltipItem.label;
+                                let val = tooltipItem.formattedValue;
+                                return `${courier}: ${val} সফল ডেলিভারি`;
+                            }
+                        }
+                    }
                 }
-            }
+            },
+            plugins: [{
+                id: 'centerText',
+                afterDraw(chart) {
+                    const { ctx, chartArea: { width, height } } = chart;
+                    ctx.save();
+                    ctx.font = 'bold 22px Segoe UI';
+                    ctx.fillStyle = '#333';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(totalSummary.successRate + '%', width / 2, height / 2);
+                    ctx.restore();
+                }
+            }]
         });
-
-        // Show number under chart
-        $('#successChartValue').text(finalValue + '%');
     }
-
 });
 </script>
 @endpush

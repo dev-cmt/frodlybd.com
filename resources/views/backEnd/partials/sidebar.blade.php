@@ -65,6 +65,16 @@
                 </li>
                 @endcan
 
+                <!-- Change Password -->
+                <li class="slide">
+                    <a href="{{ route('password.change') }}"
+                        class="side-menu__item {{ Request::is('password/change') ? 'active' : '' }}">
+                        <i class="bx bx-lock side-menu__icon"></i>
+                        <span class="side-menu__label">Change Password</span>
+                    </a>
+                </li>
+
+
                 <!-- Authentication - Only for admin -->
                 @canany(['view roles', 'view users'])
                 <li class="slide has-sub">
