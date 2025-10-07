@@ -107,8 +107,12 @@
     </div>
 
     <div class="row justify-content-center m-5">
-        <div class="col-md-2 p-4 rounded bg-dark text-center">
-            <img src="{{ asset('f/logo.svg') }}" alt="Pro Dev Ltd. Logo" />
+        <div class="col-md-2 p-4 rounded bg-light border-warning text-center">
+            <!-- Logo Left -->
+            <a class="navbar-brand me-auto" href="https://frodlybd.com">
+                <img src="{{ asset('images/logo-light.svg') }}" alt="Frodly Logo" height="40" class="logo-light">
+                <img src="{{ asset('images/logo-dark.svg') }}" alt="Frodly Logo Dark" height="40" class="logo-dark">
+            </a>
         </div>
     </div>
 </div>

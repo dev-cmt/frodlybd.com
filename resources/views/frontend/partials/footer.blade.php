@@ -40,13 +40,13 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="text-light">
-                            <i class="fas fa-chevron-right"></i>Return Refund Policy
+                        <a href="{{route('page.frodly')}}" class="text-light">
+                            <i class="fas fa-chevron-right"></i>Frodly Checker
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="text-light">
-                            <i class="fas fa-chevron-right"></i>Agency Account
+                        <a href="{{route('login')}}" class="text-light">
+                            <i class="fas fa-chevron-right"></i>Login & Register
                         </a>
                     </li>
                 </ul>
@@ -95,8 +95,7 @@
                 Copyright © 2022 - 2025 All Rights Reserved By Frodly.com
             </div>
             <div class="footer-badges">
-                <span class="badge">সুরক্ষিত</span>
-                <span class="badge">বাংলাদেশ</span>
+                <span class="badge">ই-কমার্স</span>
                 <span class="badge">ওয়ার্ডপ্রেস</span>
             </div>
         </div>
