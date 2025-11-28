@@ -10,10 +10,11 @@ Route::post('/login', [JwtAuthController::class, 'login']);
 
 // Protected routes (JWT required)
 Route::middleware('auth:api')->group(function () {
-    Route::post('/check-courier', [FrodlyController::class, 'check']);
+    // Route::post('/check-courier', [FrodlyController::class, 'check']);
     Route::post('/logout', [JwtAuthController::class, 'logout']);
     Route::post('/refresh', [JwtAuthController::class, 'refresh']);
 });
+Route::post('/token/check-courier', [FrodlyController::class, 'checkManualy']);
 
-Route::post('/token/check-courier', [FrodlyController::class, 'checkManualy'])->middleware('token.valid');
 
+Route::post('/check-courier', [FrodlyController::class, 'check'])->middleware('token.valid');

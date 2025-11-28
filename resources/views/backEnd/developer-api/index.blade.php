@@ -171,10 +171,10 @@
 
             {{-- Check Courier (Bearer Token) --}}
             <div class="card api-card" id="check-courier">
-                <div class="card-header api-card-header">3️⃣ Check Courier (Bearer Token)</div>
+                <div class="card-header api-card-header">3️⃣ Check Courier</div>
                 <div class="card-body">
                     <p><strong>POST:</strong> <code>{base_url}/api/check-courier</code></p>
-                    <p>Headers: <code>Authorization: Bearer {token}</code></p>
+                    <p>Headers: <code>X-API-TOKEN: {token}</code></p>
                     <h6>Request JSON</h6>
                     <div class="code-block">
                         <button class="copy-btn" onclick="copyCode(this)">Copy</button>
