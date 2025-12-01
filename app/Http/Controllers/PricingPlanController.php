@@ -1,73 +1,39 @@
 <?php
-namespace App\Http\Controllers;
 
+namespace App\Http\Controllers;
 use App\Models\PricingPlan;
 use Illuminate\Http\Request;
 
 class PricingPlanController extends Controller
 {
-    public function index()
-    {
+    public function index() {
         $plans = PricingPlan::all();
         return view('backend.pricing.index', compact('plans'));
     }
 
-    public function create()
-    {
-        return view('backend.pricing.create');
+    public function store(Request $request) {
+        $data = $request->only(['name','domain_count','price','regular_price','billing_cycle','status','description']);
+
+        $features_text = $request->features_text ?? [];
+        $features_active = $request->features_active ?? [];
+        $features_data = [];
+        foreach ($features_text as $index => $text) {
+            if (!empty($text)) {
+                $features_data[] = [
+                    'text' => $text,
+                    'is_active' => $features_active[$index] ?? 0
+                ];
+            }
+        }
+
+        $data['features'] = json_encode($features_data);
+
+        PricingPlan::updateOrCreate(['id' => $request->id], $data);
+        return redirect()->back()->with('success','Pricing plan saved successfully');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'billing_cycle' => 'required|in:monthly,yearly',
-            'features' => 'nullable|array',
-        ]);
-
-        PricingPlan::create([
-            'name' => $request->name,
-            'badge' => $request->badge,
-            'price' => $request->price,
-            'billing_cycle' => $request->billing_cycle,
-            'description' => $request->description,
-            'features' => $request->features,
-        ]);
-
-        return redirect()->route('admin.pricing.index')->with('success', 'Pricing Plan Created Successfully');
-    }
-
-    public function edit(PricingPlan $pricingPlan)
-    {
-        return view('backend.pricing.edit', compact('pricingPlan'));
-    }
-
-    public function update(Request $request, PricingPlan $pricingPlan)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'billing_cycle' => 'required|in:monthly,yearly',
-            'features' => 'nullable|array',
-        ]);
-
-        $pricingPlan->update([
-            'name' => $request->name,
-            'badge' => $request->badge,
-            'price' => $request->price,
-            'billing_cycle' => $request->billing_cycle,
-            'description' => $request->description,
-            'features' => $request->features,
-        ]);
-
-        return redirect()->route('admin.pricing.index')->with('success', 'Pricing Plan Updated Successfully');
-    }
-
-    public function destroy(PricingPlan $pricingPlan)
-    {
-        $pricingPlan->delete();
-        return redirect()->route('admin.pricing.index')->with('success', 'Pricing Plan Deleted Successfully');
+    public function destroy($id) {
+        PricingPlan::findOrFail($id)->delete();
+        return redirect()->back()->with('success','Pricing plan deleted successfully');
     }
 }
-

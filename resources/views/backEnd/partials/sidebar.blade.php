@@ -34,13 +34,24 @@
                 <!-- Pricing -->
                 @can('view packages')
                 <li class="slide">
-                    <a href="{{ route('admin.pricing.index') }}"
-                        class="side-menu__item {{ Request::is('admin/pricing*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.pricing-plans.index') }}"
+                        class="side-menu__item {{ Request::is('admin/pricing-plans*') ? 'active' : '' }}">
                         <i class="bx bx-package side-menu__icon"></i>
                         <span class="side-menu__label">Pricing List</span>
                     </a>
                 </li>
                 @endcan
+
+                <!-- Client Plans -->
+                {{-- @can('client packages') --}}
+                <li class="slide">
+                    <a href="{{ route('admin.client-plans.index') }}"
+                        class="side-menu__item {{ Request::is('admin/client-plans*') ? 'active' : '' }}">
+                        <i class="bx bx-cart side-menu__icon"></i>
+                        <span class="side-menu__label">Purchase List</span>
+                    </a>
+                </li>
+                {{-- @endcan --}}
 
 
                 <!-- Achievement -->

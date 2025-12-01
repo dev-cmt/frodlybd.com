@@ -8,7 +8,7 @@ use \Illuminate\Support\Str;
 class PricingPlan extends Model
 {
     protected $fillable = [
-        'name', 'slug', 'price', 'regular_price', 'billing_cycle', 'description', 'features', 'status'
+        'name', 'slug', 'domain_count', 'price', 'regular_price', 'billing_cycle', 'description', 'features', 'status'
     ];
 
     protected $casts = [
@@ -19,7 +19,7 @@ class PricingPlan extends Model
     {
         parent::boot();
 
-        static::creating(fn($priceing) => $priceing->slug = Str::slug($priceing->title));
-        static::updating(fn($priceing) => $priceing->slug = Str::slug($priceing->title));
+        static::creating(fn($priceing) => $priceing->slug = Str::slug($priceing->name));
+        static::updating(fn($priceing) => $priceing->slug = Str::slug($priceing->name));
     }
 }

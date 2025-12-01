@@ -10,6 +10,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\PageSeoController;
 use App\Http\Controllers\PricingPlanController;
 use App\Http\Controllers\DeveloperApiController;
+use App\Http\Controllers\ClientPlanController;
 
 
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
@@ -31,12 +32,14 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     // Pricing Management
-    Route::get('/pricing', [PricingPlanController::class, 'index'])->name('pricing.index');
-    Route::get('/pricing/create', [PricingPlanController::class, 'create'])->name('pricing.create');
-    Route::post('/pricing/store', [PricingPlanController::class, 'store'])->name('pricing.store');
-    Route::get('/pricing/{pricing}/edit', [PricingPlanController::class, 'edit'])->name('pricing.edit');
-    Route::post('/pricing/update', [PricingPlanController::class, 'update'])->name('pricing.update');
-    Route::delete('/pricing/{id}', [PricingPlanController::class, 'destroy'])->name('pricing.destroy');
+    Route::get('/pricing-plans', [PricingPlanController::class, 'index'])->name('pricing-plans.index');
+    Route::post('/pricing-plans/store', [PricingPlanController::class, 'store'])->name('pricing-plans.store');
+    Route::delete('/pricing-plans/{id}', [PricingPlanController::class, 'destroy'])->name('pricing-plans.destroy');
+
+    // Client Plans
+    Route::get('/client-plans', [ClientPlanController::class, 'index'])->name('client-plans.index');
+    Route::post('/client-plans/store', [ClientPlanController::class, 'store'])->name('client-plans.store');
+    Route::delete('/client-plans/{id}', [ClientPlanController::class, 'destroy'])->name('client-plans.destroy');
 
     // Developer API
     Route::get('/developer-api', [DeveloperApiController::class, 'index'])->name('developer-api.index');
