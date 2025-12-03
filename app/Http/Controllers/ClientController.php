@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use App\Helpers\ImageHelper;
 
-class UserController extends Controller
+class ClientController extends Controller
 {
-    // List users
+    // List clients
     public function index()
     {
-        $users = User::with('roles')->where('is_admin', 1)->latest()->get();
+        $users = User::with('roles')->where('is_admin', 0)->latest()->get();
         $roles = Role::all();
-        return view('backend.users.index', compact('users', 'roles'));
+        return view('backend.users.clients', compact('users', 'roles'));
     }
 
-    // Create new User
+    // Create new client
     public function store(Request $request)
     {
         $request->validate([
@@ -38,14 +38,13 @@ class UserController extends Controller
             $user->photo_path = ImageHelper::uploadImage($request->file('photo'), 'uploads/profile');
         }
 
-        $user->is_admin = $request->is_admin ?? 1;
         $user->save();
         $user->assignRole($request->role);
 
-        return redirect()->back()->with('success', 'User created successfully.');
+        return redirect()->back()->with('success', 'Client created successfully.');
     }
 
-    // Update user
+    // Update client
     public function update(Request $request)
     {
         $request->validate([
@@ -64,15 +63,14 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->is_admin = $request->is_admin ?? 1;
         $user->save();
 
         $user->syncRoles([$request->role]);
 
-        return redirect()->back()->with('success', 'User updated successfully.');
+        return redirect()->back()->with('success', 'Client updated successfully.');
     }
 
-    // Delete User
+    // Delete client
     public function destroy($id)
     {
         $user = User::findOrFail($id);
@@ -81,6 +79,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return redirect()->back()->with('success', 'User deleted successfully.');
+        return redirect()->back()->with('success', 'Client deleted successfully.');
     }
 }

@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-@section('title', 'Users Management')
+@section('title', 'Clients Management')
 
 @push('css')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -12,12 +12,12 @@
 
 <!-- Page Header -->
 <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
-    <h1 class="page-title fw-semibold fs-18 mb-0">Users Management</h1>
+    <h1 class="page-title fw-semibold fs-18 mb-0">Clients Management</h1>
     <div class="ms-md-1 ms-0">
         <nav>
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item active">Users</li>
+                <li class="breadcrumb-item active">Clients</li>
             </ol>
         </nav>
     </div>
@@ -27,8 +27,8 @@
     <div class="col-xl-12">
         <div class="card custom-card">
             <div class="card-header justify-content-between d-flex align-items-center">
-                <div class="card-title">Users List</div>
-                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createUserModal">Add User</button>
+                <div class="card-title">Clients List</div>
+                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createClientModal">Add Client</button>
             </div>
             <div class="card-body">
                 @if(session('success'))
@@ -46,7 +46,6 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Role</th>
-                                <th>Admin</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -65,26 +64,18 @@
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->roles->pluck('name')->first() ?? '-' }}</td>
                                 <td>
-                                    @if($user->is_admin)
-                                        <span class="badge bg-success">Yes</span>
-                                    @else
-                                        <span class="badge bg-secondary">No</span>
-                                    @endif
-                                </td>
-                                <td>
                                     <div class="btn-list">
                                         <button type="button" class="btn btn-sm btn-warning-light btn-icon edit-user"
                                             data-id="{{ $user->id }}"
                                             data-name="{{ $user->name }}"
                                             data-email="{{ $user->email }}"
                                             data-role="{{ $user->roles->pluck('name')->first() ?? '' }}"
-                                            data-is_admin="{{ $user->is_admin }}"
                                             data-photo="{{ $user->photo_path }}"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#editUserModal">
+                                            data-bs-target="#editClientModal">
                                             <i class="ri-pencil-line"></i>
                                         </button>
-                                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.clients.destroy', $user->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger-light btn-icon" onclick="return confirm('Are you sure?')">
@@ -96,27 +87,28 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="text-center">No users found.</td>
+                                <td colspan="6" class="text-center">No clients found.</td>
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
 
+                {{-- <div class="d-flex justify-content-center mt-3">{{ $users->links() }}</div> --}}
             </div>
         </div>
     </div>
 </div>
 
-<!-- Create User Modal -->
-<div class="modal fade" id="createUserModal" tabindex="-1">
+<!-- Create Client Modal -->
+<div class="modal fade" id="createClientModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title">Add User</h6>
+                <h6 class="modal-title">Add Client</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.clients.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="row g-3">
@@ -145,12 +137,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        {{-- <div class="col-md-6 d-flex align-items-center">
-                            <div class="form-check mt-4">
-                                <input class="form-check-input" type="checkbox" name="is_admin" value="1" id="create_is_admin">
-                                <label class="form-check-label" for="create_is_admin">Is Admin</label>
-                            </div>
-                        </div> --}}
                         <div class="col-md-6">
                             <label class="form-label">Photo</label>
                             <input type="file" name="photo" class="form-control">
@@ -159,22 +145,22 @@
                 </div>
                 <div class="modal-footer mt-3">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create User</button>
+                    <button type="submit" class="btn btn-primary">Create Client</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- Edit User Modal -->
-<div class="modal fade" id="editUserModal" tabindex="-1">
+<!-- Edit Client Modal -->
+<div class="modal fade" id="editClientModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h6 class="modal-title">Edit User</h6>
+                <h6 class="modal-title">Edit Client</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form action="{{ route('admin.users.update') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admin.clients.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id" id="edit_id">
                 <div class="modal-body">
@@ -196,12 +182,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        {{-- <div class="col-md-6 d-flex align-items-center">
-                            <div class="form-check mt-4">
-                                <input class="form-check-input" type="checkbox" name="is_admin" value="1" id="edit_is_admin">
-                                <label class="form-check-label" for="edit_is_admin">Is Admin</label>
-                            </div>
-                        </div> --}}
                         <div class="col-md-6">
                             <label class="form-label">Photo</label>
                             <input type="file" name="photo" class="form-control" id="edit_photo">
@@ -211,7 +191,7 @@
                 </div>
                 <div class="modal-footer mt-3">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Update User</button>
+                    <button type="submit" class="btn btn-primary">Update Client</button>
                 </div>
             </form>
         </div>
@@ -233,14 +213,12 @@ $(document).ready(function(){
         const name = $(this).data('name');
         const email = $(this).data('email');
         const role = $(this).data('role');
-        const isAdmin = $(this).data('is_admin');
         const photo = $(this).data('photo');
 
         $('#edit_id').val(id);
         $('#edit_name').val(name);
         $('#edit_email').val(email);
         $('#edit_role').val(role).trigger('change');
-        $('#edit_is_admin').prop('checked', isAdmin == 1);
 
         if(photo){
             $('#current_photo_preview').html(`<img src="{{ asset('/') }}${photo}" class="rounded-circle" width="40" height="40">`);

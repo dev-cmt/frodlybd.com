@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\SeoTrait;
 use App\Helpers\FrodlyHelper;
 use App\Models\Page;
+use App\Models\Order;
+use App\Models\PricingPlan;
+use App\Models\User;
+use Carbon\Carbon;
 
 
 class HomeController extends Controller
@@ -16,6 +22,8 @@ class HomeController extends Controller
 
     public function welcome()
     {
+        $pricingPlans = PricingPlan::where('status', 1)->get();
+
         // SEO
         $page = Page::with('seo')->where('slug','home')->firstOrFail();
         $this->setSeo([
@@ -30,12 +38,86 @@ class HomeController extends Controller
         $breadcrumbs = $this->generateBreadcrumbJsonLd([
             ['name' => 'Home', 'url' => url('/')],
         ]);
-        return view('frontend.welcome', compact('seo_tags','breadcrumbs'));
+
+        return view('frontend.welcome', compact('pricingPlans', 'seo_tags','breadcrumbs'));
+    }
+
+    public function checkout($planId = null)
+    {
+        if ($planId) {
+            $plan = PricingPlan::findOrFail($planId);
+        }
+
+        return view('frontend.checkout', compact('plan'));
+    }
+
+    public function placeOrder(Request $request)
+    {
+
+        // Get authenticated user or create/update
+        $user = Auth::user();
+        if(!$user) {
+            // Create user if not logged in
+            $user = User::updateOrCreate(
+                ['email' => $request->email],
+                [
+                    'name' => $request->name,
+                    'phone' => $request->phone,
+                    'password' => Hash::make($request->password),
+                    'status' => 1
+                ]
+            );
+            Auth::login($user);
+        } else {
+            // Update user info & password
+            $user->update([
+                'name' => $request->name,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+            ]);
+        }
+
+        // Fetch the plan
+        $plan = PricingPlan::findOrFail($request->plan_id);
+
+        // Create Order
+        $order = Order::create([
+            'user_id'        => $user->id,
+            'plan_id'        => $plan->id,
+            'amount'         => $plan->price,
+            'start_date'     => Carbon::now(),
+            'end_date'       => Carbon::now()->addMonth(),
+            'status'         => 'pending', // default status
+            'allowed_domains'=> $plan->domain_count,
+            'used_domains'   => 0
+        ]);
+
+        // Handle Payment Method
+        switch ($request->payment_method) {
+            case 'sslcommerz':
+                // redirect to SSLCOMMERZ page
+                return redirect()->route('payment.sslcommerz', $order->id);
+            case 'nagad':
+                return redirect()->route('payment.nagad', $order->id);
+            case 'bkash':
+                return redirect()->route('payment.bkash', $order->id);
+            case 'cod':
+                $order->update(['status' => 'active']); // mark COD as completed immediately
+                return redirect()->route('order.success', $order->id)->with('success', 'অর্ডার সফলভাবে তৈরি হয়েছে।');
+            default:
+                return back()->withErrors('পেমেন্ট মেথড সঠিক নয়।');
+        }
+    }
+
+    public function orderSuccess($orderId)
+    {
+        $order = Order::with('plan', 'user')->findOrFail($orderId);
+        return view('frontend.order-success', compact('order'));
     }
 
     public function pageFrodly()
     {
-        return view('frontend.frodly-checker');
+        return view('frontend.frodly-checker', compact('order'));
     }
 
     public function getFrodly(Request $request)

@@ -30,7 +30,6 @@
                     </a>
                 </li>
 
-
                 <!-- Pricing -->
                 @can('view packages')
                 <li class="slide">
@@ -64,6 +63,15 @@
                     </a>
                 </li>
                 @endcan
+
+
+                <li class="slide">
+                    <a href="{{ route('admin.clients.index') }}"
+                        class="side-menu__item {{ Request::is('admin/clients*') ? 'active' : '' }}">
+                        <i class="bx bxs-user side-menu__icon"></i>
+                        <span class="side-menu__label">Client List</span>
+                    </a>
+                </li>
 
 
                 <!-- SEO Settings -->

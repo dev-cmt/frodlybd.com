@@ -10,10 +10,15 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\PageSeoController;
 use App\Http\Controllers\PricingPlanController;
 use App\Http\Controllers\DeveloperApiController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientPlanController;
 
 
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
+Route::get('/checkout/{plan?}', [HomeController::class, 'checkout'])->name('checkout');
+Route::post('/place-order', [HomeController::class, 'placeOrder'])->name('placeorder');
+Route::get('/order-success/{orderId}', [HomeController::class, 'orderSuccess'])->name('order.success');
+
 Route::get('/page/frodly', [HomeController::class, 'pageFrodly'])->name('page.frodly'); // Not used
 Route::get('/get/frodly', [HomeController::class, 'getFrodly'])->name('get.frodly');
 
@@ -36,6 +41,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/pricing-plans/store', [PricingPlanController::class, 'store'])->name('pricing-plans.store');
     Route::delete('/pricing-plans/{id}', [PricingPlanController::class, 'destroy'])->name('pricing-plans.destroy');
 
+    // Client Management
+    Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
+    Route::post('/clients/store', [ClientController::class, 'store'])->name('clients.store');
+    Route::post('/clients/update', [ClientController::class, 'update'])->name('clients.update');
+    Route::delete('/clients/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
+
     // Client Plans
     Route::get('/client-plans', [ClientPlanController::class, 'index'])->name('client-plans.index');
     Route::post('/client-plans/store', [ClientPlanController::class, 'store'])->name('client-plans.store');
@@ -56,6 +67,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     // User Management
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::post('/users/store', [ClientController::class, 'store'])->name('users.store');
     Route::post('/users/update', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 

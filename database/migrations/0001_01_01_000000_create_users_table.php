@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('photo_path')->nullable();
             $table->text('api_token')->nullable();
+            $table->boolean('is_admin')->default(false);
             $table->boolean('status')->default(true);
             $table->rememberToken();
             $table->timestamps();

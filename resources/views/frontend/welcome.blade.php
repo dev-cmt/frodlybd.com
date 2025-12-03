@@ -529,34 +529,42 @@
             <div class="border"></div>
 
             <div class="row row-cols-1 row-cols-md-3 g-4" id="pricing-cards">
-                <div class="col">
-                    <div class="pricing-card h-100 position-relative">
+                @foreach($pricingPlans as $plan)
+                    <div class="col-md-4">
+                        <div class="pricing-card h-100 position-relative">
+                            {{-- Header --}}
+                            <div class="pricing-header text-center p-4">
+                                <h3>{{ $plan->name }}</h3>
 
-                        <div class="pricing-header text-center p-4">
-                            <h3>৩ দিনের ট্রায়াল</h3>
-                            <h4 class="mb-0">
-                                <span class="original-price">ফ্রি</span>
-                                <span class="discount-price">ফ্রি</span>
-                            </h4>
-                            <p>3 Days</p>
-                        </div>
-                        <div class="pricing-features p-4">
-                            <ul class="list-unstyled mb-4">
-                                <li class="mb-2"><i class="fa-solid fa-check-double text-success me-2"></i>আনলিমিটেড ফোন নাম্বার চেক*</li>
-                                <li class="mb-2"><i class="fa-solid fa-check-double text-success me-2"></i>ওয়ার্ডপ্রেস প্লাগইন সুবিধা</li>
-                                <li class="mb-2"><i class="fa-solid fa-check-double text-success me-2"></i>Google Sheet Integration প্ল্যাগিন সুবিধা</li>
-                                <li class="mb-2"><i class="fa-solid fa-check-double text-success me-2"></i>Google Extension সুবিধা</li>
-                                <li class="mb-2"><i class="fa-solid fa-check-double text-success me-2"></i>ওয়েব অ্যাপ্লিকেশন সুবিধা</li>
-                                <li class="mb-2"><i class="fa-solid fa-check-double text-success me-2"></i>মোবাইল এ্যাপ সুবিধা</li>
-                                <li class="mb-2"><i class="fa-solid fa-check-double text-success me-2"></i>কাস্টম ইন্টিগ্রেশন সুবিধা</li>
+                                <div class="billing-badge">{{ ucfirst($plan->billing_cycle) }}</div>
+                                {{-- Price --}}
+                                <h4 class="mb-0">
+                                    <span class="original-price">
+                                        {{ $plan->regular_price ? $plan->regular_price . ' টাকা' : 'ফ্রি' }}
+                                    </span>
 
-                            </ul>
-                            <a href="https://dash.hoorin.com/signup.php" class="btn btn-warning w-100">
-                                বিনামূল্যে শুরু করুন
-                            </a>
+                                    <span class="discount-price">
+                                        {{ $plan->price ? $plan->price . ' টাকা' : 'ফ্রি' }}
+                                    </span>
+                                </h4>
+                            </div>
+
+                            {{-- Features --}}
+                            <div class="pricing-features p-4">
+                                <ul class="list-unstyled mb-4">
+                                    @foreach(json_decode($plan->features ?? '[]', true) as $feature)
+                                        <li class="mb-2">
+                                            <i class="me-2 {{ $feature['is_active'] == 1 ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle-check op-3' }}"></i>
+                                            {{ $feature['text'] ?? '' }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+
+                                <a href="{{ route('checkout', ['plan' => $plan->id]) }}" class="btn btn-warning w-100">শুরু করুন</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
 
             </div>
         </div>
