@@ -57,26 +57,27 @@
         <div class="success-icon">✅</div>
         <div class="success-title">অর্ডার সফলভাবে সম্পন্ন হয়েছে!</div>
         <div class="success-text">
-            আপনার অর্ডার <strong>#{{ $order->id }}</strong> সফলভাবে গ্রহণ করা হয়েছে।
+            আপনার অর্ডার <strong>#{{ $sale->id }}</strong> সফলভাবে গ্রহণ করা হয়েছে।
             বিস্তারিত তথ্য নিচে দেওয়া হলো।
         </div>
 
         <div class="order-details">
             <h5>অর্ডার বিস্তারিত</h5>
-            <p><strong>প্যাকেজ:</strong> {{ $order->plan->name }}</p>
-            <p><strong>বিলিং সাইকেল:</strong> {{ ucfirst($order->plan->billing_cycle) }}</p>
-            <p><strong>পরিমাণ:</strong> {{ $order->amount }} টাকা</p>
-            <p><strong>অর্ডার তারিখ:</strong> {{ $order->created_at->format('d M, Y H:i') }}</p>
-            <p><strong>স্ট্যাটাস:</strong> {{ ucfirst($order->status) }}</p>
+            <p><strong>প্যাকেজ:</strong> {{ $sale->plan->name }}</p>
+            <p><strong>বিলিং সাইকেল:</strong> {{ ucfirst($sale->plan->billing_cycle) }}</p>
+            <p><strong>পরিমাণ:</strong> {{ $sale->amount }} টাকা</p>
+            <p><strong>অর্ডার তারিখ:</strong> {{ $sale->created_at->format('d M, Y H:i') }}</p>
+            <p><strong>স্ট্যাটাস:</strong> {{ ucfirst($sale->status) }}</p>
         </div>
 
         <div class="order-details">
             <h5>ব্যবহারকারীর তথ্য</h5>
-            <p><strong>নাম:</strong> {{ $order->user->name }}</p>
-            <p><strong>ইমেইল:</strong> {{ $order->user->email }}</p>
-            <p><strong>মোবাইল:</strong> {{ $order->user->phone }}</p>
+            <p><strong>নাম:</strong> {{ $sale->user->name }}</p>
+            <p><strong>ইমেইল:</strong> {{ $sale->user->email }}</p>
+            <p><strong>মোবাইল:</strong> {{ $sale->user->phone }}</p>
         </div>
 
         <a href="{{ route('home') }}" class="btn btn-primary btn-home">🏠 হোমে ফিরে যান</a>
+        <a href="{{ route('admin.client-plans.index') }}" class="btn btn-primary btn-home">📄 বিস্তারিত দেখুন</a>
     </div>
 @endsection

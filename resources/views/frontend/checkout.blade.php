@@ -151,11 +151,12 @@
                                 value="{{ auth()->user()->email ?? '' }}" required>
                         </div>
 
-                        {{-- Password --}}
+                        @if (auth()->user() == null)
                         <div class="col-md-12 mb-3">
                             <label>পাসওয়ার্ড *</label>
                             <input type="password" class="form-control" name="password" required minlength="6">
                         </div>
+                        @endif
 
                         <div class="col-md-12 mb-3">
                             <label>কোম্পানির নাম (ঐচ্ছিক)</label>

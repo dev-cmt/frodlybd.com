@@ -1,4 +1,4 @@
-@extends('backend.layouts.master')
+@extends('backEnd.layouts.master')
 
 @section('title', 'Edit Profile')
 

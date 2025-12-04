@@ -11,7 +11,8 @@ use App\Http\Controllers\PageSeoController;
 use App\Http\Controllers\PricingPlanController;
 use App\Http\Controllers\DeveloperApiController;
 use App\Http\Controllers\ClientController;
-use App\Http\Controllers\ClientPlanController;
+use App\Http\Controllers\YourPackageController;
+use App\Http\Controllers\SaleController;
 
 
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
@@ -36,10 +37,14 @@ Route::middleware('auth')->group(function () {
 
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
-    // Pricing Management
-    Route::get('/pricing-plans', [PricingPlanController::class, 'index'])->name('pricing-plans.index');
-    Route::post('/pricing-plans/store', [PricingPlanController::class, 'store'])->name('pricing-plans.store');
-    Route::delete('/pricing-plans/{id}', [PricingPlanController::class, 'destroy'])->name('pricing-plans.destroy');
+    // Your Package
+    Route::get('/your-package', [YourPackageController::class, 'index'])->name('your-package.index');
+    // Route::post('/your-package/store', [YourPackageController::class, 'store'])->name('your-package.store');
+    // Route::delete('/your-package/{id}', [YourPackageController::class, 'destroy'])->name('your-package.destroy');
+
+    Route::post('/orders', [YourPackageController::class, 'storeDomain'])->name('domains.store');
+    Route::put('/domains/{domain}', [YourPackageController::class, 'updateDomain'])->name('domains.update');
+    Route::delete('/domains/{domain}', [YourPackageController::class, 'destroyDomain'])->name('domains.destroy');
 
     // Client Management
     Route::get('/clients', [ClientController::class, 'index'])->name('clients.index');
@@ -47,10 +52,16 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/clients/update', [ClientController::class, 'update'])->name('clients.update');
     Route::delete('/clients/{id}', [ClientController::class, 'destroy'])->name('clients.destroy');
 
-    // Client Plans
-    Route::get('/client-plans', [ClientPlanController::class, 'index'])->name('client-plans.index');
-    Route::post('/client-plans/store', [ClientPlanController::class, 'store'])->name('client-plans.store');
-    Route::delete('/client-plans/{id}', [ClientPlanController::class, 'destroy'])->name('client-plans.destroy');
+    // Pricing Management
+    Route::get('/pricing-plans', [PricingPlanController::class, 'index'])->name('pricing-plans.index');
+    Route::post('/pricing-plans/store', [PricingPlanController::class, 'store'])->name('pricing-plans.store');
+    Route::delete('/pricing-plans/{id}', [PricingPlanController::class, 'destroy'])->name('pricing-plans.destroy');
+
+    // Sales Management
+    Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+    Route::post('/sales/store', [SaleController::class, 'store'])->name('sales.store');
+    Route::put('/sales/{id}', [SaleController::class, 'update'])->name('sales.update'); // <-- Add this
+    Route::delete('/sales/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
 
     // Developer API
     Route::get('/developer-api', [DeveloperApiController::class, 'index'])->name('developer-api.index');

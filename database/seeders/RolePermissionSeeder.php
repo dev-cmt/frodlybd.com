@@ -29,13 +29,15 @@ class RolePermissionSeeder extends Seeder
         // 2️⃣ Define Modules
         // -------------------------------
         $modules = [
-            'packages',
+            'dashboard',
             'developer api',
-            'settings',
+            'pricing plans',
+            'sales',
+            'clients',
             'seo',
+            'settings',
             'users',
             'roles',
-            'dashboard',
         ];
 
         // -------------------------------
@@ -55,7 +57,7 @@ class RolePermissionSeeder extends Seeder
         // -------------------------------
         $superAdminRole = Role::firstOrCreate(['name' => 'superadmin']);
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        $customerRole = Role::firstOrCreate(['name' => 'customer']);
+        $customerRole = Role::firstOrCreate(['name' => 'client']);
 
         // -------------------------------
         // 5️⃣ Assign Permissions
@@ -74,13 +76,13 @@ class RolePermissionSeeder extends Seeder
         // -------------------------------
         $superAdmin = User::firstOrCreate(
             ['email' => 'super@gmail.com'],
-            ['name' => 'Super Admin', 'password' => 'super12345']
+            ['name' => 'Super Admin', 'password' => 'super12345', 'is_admin' => 1]
         );
         $superAdmin->syncRoles([$superAdminRole]);
 
         $admin = User::firstOrCreate(
             ['email' => 'admin@gmail.com'],
-            ['name' => 'Admin User', 'password' => 'admin12345']
+            ['name' => 'Admin User', 'password' => 'admin12345', 'is_admin' => 1]
         );
         $admin->syncRoles([$adminRole]);
 

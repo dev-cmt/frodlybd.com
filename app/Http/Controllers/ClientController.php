@@ -15,7 +15,7 @@ class ClientController extends Controller
     {
         $users = User::with('roles')->where('is_admin', 0)->latest()->get();
         $roles = Role::all();
-        return view('backend.users.clients', compact('users', 'roles'));
+        return view('backEnd.users.clients', compact('users', 'roles'));
     }
 
     // Create new client
@@ -25,13 +25,14 @@ class ClientController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
-            'role' => 'required|exists:roles,name',
+            // 'role' => 'required|exists:roles,name',
             'photo' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:2048',
         ]);
 
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->phone = $request->phone;
         $user->password = Hash::make($request->password);
 
         if ($request->hasFile('photo')) {
@@ -39,7 +40,7 @@ class ClientController extends Controller
         }
 
         $user->save();
-        $user->assignRole($request->role);
+        $user->assignRole('client');
 
         return redirect()->back()->with('success', 'Client created successfully.');
     }
@@ -51,7 +52,7 @@ class ClientController extends Controller
             'id' => 'required|exists:users,id',
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $request->id,
-            'role' => 'required|exists:roles,name',
+            // 'role' => 'required|exists:roles,name',
             'photo' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:2048',
         ]);
 
@@ -63,9 +64,11 @@ class ClientController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->phone = $request->phone;
         $user->save();
 
-        $user->syncRoles([$request->role]);
+        // $user->syncRoles([$request->role]);
+        $user->assignRole('client');
 
         return redirect()->back()->with('success', 'Client updated successfully.');
     }

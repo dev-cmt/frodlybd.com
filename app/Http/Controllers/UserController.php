@@ -14,8 +14,8 @@ class UserController extends Controller
     public function index()
     {
         $users = User::with('roles')->where('is_admin', 1)->latest()->get();
-        $roles = Role::all();
-        return view('backend.users.index', compact('users', 'roles'));
+        $roles = Role::all()->whereNotIn('name', ['client']);
+        return view('backEnd.users.index', compact('users', 'roles'));
     }
 
     // Create new User

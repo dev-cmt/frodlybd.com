@@ -8,7 +8,7 @@ class PricingPlanController extends Controller
 {
     public function index() {
         $plans = PricingPlan::all();
-        return view('backend.pricing.index', compact('plans'));
+        return view('backEnd.pricing.index', compact('plans'));
     }
 
     public function store(Request $request) {

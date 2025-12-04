@@ -43,7 +43,7 @@ class RegisteredUserController extends Controller
         ]);
 
         // Assign 'customer' role automatically
-        $user->assignRole('customer');
+        $user->assignRole('client');
 
         event(new Registered($user));
 

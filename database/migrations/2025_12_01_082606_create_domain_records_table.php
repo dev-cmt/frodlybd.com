@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('domain_records', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
+            $table->foreignId('sale_id')->constrained('sales')->onDelete('cascade');
             $table->string('domain_name');
             $table->enum('status', ['active','inactive'])->default('active');
             $table->timestamps();

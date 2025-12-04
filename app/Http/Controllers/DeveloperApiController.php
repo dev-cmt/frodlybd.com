@@ -11,7 +11,7 @@ class DeveloperApiController extends Controller
 {
     public function index()
     {
-        return view('backend.developer-api.index');
+        return view('backEnd.developer-api.index');
     }
 
     public function generateToken(Request $request)

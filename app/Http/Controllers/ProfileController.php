@@ -19,7 +19,7 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user();
-        return view('backend.profile.edit', compact('user'));
+        return view('backEnd.profile.edit', compact('user'));
     }
     /**
      * Update the user's profile information.
@@ -79,7 +79,7 @@ class ProfileController extends Controller
 
     public function editPassword()
     {
-        return view('backend.profile.change-password');
+        return view('backEnd.profile.change-password');
     }
 
     public function updatePassword(Request $request)

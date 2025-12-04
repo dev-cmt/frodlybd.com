@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('sales', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
@@ -24,6 +24,7 @@ return new class extends Migration
             // Independent domain limits
             $table->integer('allowed_domains')->default(0);
             $table->integer('used_domains')->default(0);
+            $table->integer('request_limit')->default(0);
 
             $table->enum('status', ['pending','active','expired'])->default('pending');
 
@@ -36,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('sales');
     }
 };

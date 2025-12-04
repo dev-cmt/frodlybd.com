@@ -30,27 +30,14 @@
                     </a>
                 </li>
 
-                <!-- Pricing -->
-                @can('view packages')
+                <!-- Your Package -->
                 <li class="slide">
-                    <a href="{{ route('admin.pricing-plans.index') }}"
-                        class="side-menu__item {{ Request::is('admin/pricing-plans*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.your-package.index') }}"
+                        class="side-menu__item {{ Request::is('admin/your-package*') ? 'active' : '' }}">
                         <i class="bx bx-package side-menu__icon"></i>
-                        <span class="side-menu__label">Pricing List</span>
+                        <span class="side-menu__label">Your Package</span>
                     </a>
                 </li>
-                @endcan
-
-                <!-- Client Plans -->
-                {{-- @can('client packages') --}}
-                <li class="slide">
-                    <a href="{{ route('admin.client-plans.index') }}"
-                        class="side-menu__item {{ Request::is('admin/client-plans*') ? 'active' : '' }}">
-                        <i class="bx bx-cart side-menu__icon"></i>
-                        <span class="side-menu__label">Purchase List</span>
-                    </a>
-                </li>
-                {{-- @endcan --}}
 
 
                 <!-- Achievement -->
@@ -65,13 +52,37 @@
                 @endcan
 
 
+                <!-- Pricing -->
+                @can('view pricing plans')
+                <li class="slide">
+                    <a href="{{ route('admin.pricing-plans.index') }}"
+                        class="side-menu__item {{ Request::is('admin/pricing-plans*') ? 'active' : '' }}">
+                        <i class="bx bx-dollar side-menu__icon"></i>
+                        <span class="side-menu__label">Pricing Plan</span>
+                    </a>
+                </li>
+                @endcan
+
+                @can('view sales')
+                <li class="slide">
+                    <a href="{{ route('admin.sales.index') }}"
+                        class="side-menu__item {{ Request::is('admin/sales*') ? 'active' : '' }}">
+                        <i class="bx bx-cart side-menu__icon"></i>
+                        <span class="side-menu__label">Sales</span>
+                    </a>
+                </li>
+                @endcan
+
+                <!-- Client Management -->
+                @can('view clients')
                 <li class="slide">
                     <a href="{{ route('admin.clients.index') }}"
                         class="side-menu__item {{ Request::is('admin/clients*') ? 'active' : '' }}">
                         <i class="bx bxs-user side-menu__icon"></i>
-                        <span class="side-menu__label">Client List</span>
+                        <span class="side-menu__label">Client</span>
                     </a>
                 </li>
+                @endcan
 
 
                 <!-- SEO Settings -->

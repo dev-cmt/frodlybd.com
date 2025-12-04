@@ -46,10 +46,10 @@
 
     <div class="page">
         <!-- app-header -->
-        @include('backend.partials.header')
+        @include('backEnd.partials.header')
         <!-- /app-header -->
         <!-- Start::app-sidebar -->
-        @include('backend.partials.sidebar')
+        @include('backEnd.partials.sidebar')
         <!-- End::app-sidebar -->
 
         <!-- Start::app-content -->
@@ -87,7 +87,7 @@
             </div>
         </div>
         <!-- Footer Start -->
-        @include('backend.partials.footer')
+        @include('backEnd.partials.footer')
         <!-- Footer End -->
     </div>
 

@@ -12,7 +12,7 @@ class PageSeoController extends Controller
     public function index()
     {
         $pages = Page::with('seo')->get();
-        return view('backend.seo', compact('pages'));
+        return view('backEnd.seo', compact('pages'));
     }
 
     // Update SEO for a single page

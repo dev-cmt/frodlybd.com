@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\SeoTrait;
 use App\Helpers\FrodlyHelper;
 use App\Models\Page;
-use App\Models\Order;
+use App\Models\Sale;
 use App\Models\PricingPlan;
 use App\Models\User;
 use Carbon\Carbon;
@@ -80,8 +80,8 @@ class HomeController extends Controller
         // Fetch the plan
         $plan = PricingPlan::findOrFail($request->plan_id);
 
-        // Create Order
-        $order = Order::create([
+        // Create sale record
+        $sale = Sale::create([
             'user_id'        => $user->id,
             'plan_id'        => $plan->id,
             'amount'         => $plan->price,
@@ -96,14 +96,14 @@ class HomeController extends Controller
         switch ($request->payment_method) {
             case 'sslcommerz':
                 // redirect to SSLCOMMERZ page
-                return redirect()->route('payment.sslcommerz', $order->id);
+                return redirect()->route('payment.sslcommerz', $sale->id);
             case 'nagad':
-                return redirect()->route('payment.nagad', $order->id);
+                return redirect()->route('payment.nagad', $sale->id);
             case 'bkash':
-                return redirect()->route('payment.bkash', $order->id);
+                return redirect()->route('payment.bkash', $sale->id);
             case 'cod':
-                $order->update(['status' => 'active']); // mark COD as completed immediately
-                return redirect()->route('order.success', $order->id)->with('success', 'অর্ডার সফলভাবে তৈরি হয়েছে।');
+                $sale->update(['status' => 'active']); // mark COD as completed immediately
+                return redirect()->route('order.success', $sale->id)->with('success', 'অর্ডার সফলভাবে তৈরি হয়েছে।');
             default:
                 return back()->withErrors('পেমেন্ট মেথড সঠিক নয়।');
         }
@@ -111,13 +111,13 @@ class HomeController extends Controller
 
     public function orderSuccess($orderId)
     {
-        $order = Order::with('plan', 'user')->findOrFail($orderId);
-        return view('frontend.order-success', compact('order'));
+        $sale = Sale::with('plan', 'user')->findOrFail($orderId);
+        return view('frontend.order-success', compact('sale'));
     }
 
     public function pageFrodly()
     {
-        return view('frontend.frodly-checker', compact('order'));
+        return view('frontend.frodly-checker');
     }
 
     public function getFrodly(Request $request)

@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Sale extends Model
 {
     protected $fillable = [
         'user_id', 'plan_id', 'amount',
         'start_date', 'end_date',
-        'allowed_domains', 'used_domains',
+        'allowed_domains', 'used_domains', 'request_limit',
         'status'
     ];
 
@@ -30,6 +30,6 @@ class Order extends Model
     // One order has many domains
     public function domains()
     {
-        return $this->hasMany(DomainRecord::class, 'order_id');
+        return $this->hasMany(DomainRecord::class, 'sale_id');
     }
 }

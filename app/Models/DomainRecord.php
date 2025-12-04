@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class DomainRecord extends Model
 {
     protected $fillable = [
-        'order_id', 'domain_name', 'status'
+        'sale_id', 'domain_name', 'status'
     ];
 
-    public function order()
+    public function sale()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Sale::class);
     }
 }
