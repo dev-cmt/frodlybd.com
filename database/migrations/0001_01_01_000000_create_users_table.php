@@ -24,6 +24,8 @@ return new class extends Migration
             $table->boolean('status')->default(true);
             $table->rememberToken();
             $table->timestamps();
+
+            $table->index('api_token');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

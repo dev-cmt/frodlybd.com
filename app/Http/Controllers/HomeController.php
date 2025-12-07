@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Http\Traits\SeoTrait;
 use App\Helpers\FrodlyHelper;
 use App\Models\Page;
@@ -56,34 +57,41 @@ class HomeController extends Controller
 
         // Get authenticated user or create/update
         $user = Auth::user();
-        if(!$user) {
-            // Create user if not logged in
+        if (!$user) {
+            // Create user
             $user = User::updateOrCreate(
                 ['email' => $request->email],
                 [
-                    'name' => $request->name,
+                    'name'  => $request->name,
                     'phone' => $request->phone,
-                    'password' => Hash::make($request->password),
-                    'status' => 1
+                    'password' => $request->password ? Hash::make($request->password) : null,
+                    'status'=> 1,
                 ]
             );
             Auth::login($user);
         } else {
-            // Update user info & password
+            // Update user info
             $user->update([
                 'name' => $request->name,
-                'phone' => $request->phone,
-                'password' => Hash::make($request->password),
+                'phone' => $request->phosne,
             ]);
         }
-
         // Fetch the plan
         $plan = PricingPlan::findOrFail($request->plan_id);
+
+        // Generate unique invoice number
+        do {
+            $year  = date('y');
+            $month = date('m');
+            $random = strtoupper(substr(bin2hex(random_bytes(2)), 0, 4));
+            $invoice_no = "INV-$year$month$random";
+        } while (DB::table('sales')->where('invoice_number', $invoice_no)->exists());
 
         // Create sale record
         $sale = Sale::create([
             'user_id'        => $user->id,
             'plan_id'        => $plan->id,
+            'invoice_number' => $invoice_no,
             'amount'         => $plan->price,
             'start_date'     => Carbon::now(),
             'end_date'       => Carbon::now()->addMonth(),

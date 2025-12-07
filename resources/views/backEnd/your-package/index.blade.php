@@ -58,7 +58,7 @@
                     <div class="card-title">Domain & Settings</div>
                 </div>
                 <div class="card-body">
-                    {{-- Add Domain Form --}}
+                    <!-- Add Domain Form -->
                     @if($sale->used_domains < $sale->allowed_domains)
                         <form action="{{ route('admin.domains.store') }}" method="POST" class="mb-3 d-flex">
                             @csrf
@@ -71,7 +71,7 @@
 
                     @endif
                     <hr>
-                    {{-- Existing Domains --}}
+                    <!-- Existing Domains -->
                     <ul class="list-unstyled">
                         @forelse($sale->domains as $domain)
                             <li class="d-flex justify-content-between align-items-center mb-2">
@@ -128,6 +128,12 @@
             </div>
         </div>
 
+        @php
+            $user = auth()->user(); // currently logged-in user
+            $sale = $user->sales()->latest()->first(); // get latest sale
+        @endphp
+
+        @if($sale)
         <div class="col-xl-4 d-flex">
             <div class="card custom-card">
                 <div class="card-header justify-content-between">
@@ -136,40 +142,78 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <!-- Expire Date -->
                     <div class="d-flex align-items-center mb-3">
                         <span class="avatar avatar-md avatar-rounded bg-success me-2">
-                            <i class="bi bi-people fs-16"></i>
+                            <i class="bi bi-calendar fs-16"></i>
                         </span>
-                        <p class="mb-0 flex-fill text-muted">Active Members</p>
+                        <p class="mb-0 flex-fill text-muted">Expire Date: {{ date('d-m-Y', strtotime($sale->end_date)) }}</p>
                     </div>
-                    <span class="fs-5 fw-semibold">12,897</span>
-                    <span class="fs-12 text-success ms-1"><i class="ti ti-trending-up me-1 d-inline-block"></i>3.5%</span>
+
+                    @php
+                        // Total requests and remaining %
+                        $totalRequests = $sale->domains->sum('total_requests');
+                        $maxRequests = $sale->request_limit ?? 1; // avoid division by zero
+                        $remainingRequests = max($maxRequests - $totalRequests, 0);
+                        $remainingPercentage = ($remainingRequests / $maxRequests) * 100;
+                        $totalPercentage = ($totalRequests / $maxRequests) * 100;
+                    @endphp
+
+                    <!-- Total Requests & Remaining % -->
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="fs-5 fw-semibold me-2">Limit: {{ number_format($maxRequests) }}</span>
+                        <span class="fs-12 text-success ms-auto">
+                            <i class="ti ti-trending-up me-1 d-inline-block"></i>
+                            {{ number_format($remainingPercentage, 1) }}% left
+                        </span>
+                    </div>
+
+                    <!-- Total Requests Progress Bar -->
+                    @php
+                        if ($totalPercentage <= 50) {
+                            $barColor = 'bg-success';
+                        } elseif ($totalPercentage <= 80) {
+                            $barColor = 'bg-warning';
+                        } else {
+                            $barColor = 'bg-danger';
+                        }
+                    @endphp
+
                     <div class="fw-normal d-flex align-items-center mb-2 mt-3">
                         <p class="mb-0 flex-fill">Total Requests</p>
-                        <span>3,274</span>
+                        <span>{{ number_format($totalRequests) }}</span>
                     </div>
                     <div class="progress progress-xs mb-4">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar {{ $barColor }}" role="progressbar"
+                            style="width: {{ min($totalPercentage, 100) }}%;"
+                            aria-valuenow="{{ $totalPercentage }}"
+                            aria-valuemin="0" aria-valuemax="100">
+                        </div>
                     </div>
 
-                    <div class="fw-normal d-flex align-items-center mb-2 mt-3">
-                        <p class="mb-0 flex-fill">Domain 1 Requests</p>
-                        <span>3,274</span>
-                    </div>
-                    <div class="progress progress-xs mb-4">
-                        <div class="progress-bar bg-info" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="fw-normal d-flex align-items-center mb-2 mt-3">
-                        <p class="mb-0 flex-fill">Domain 2 Requests</p>
-                        <span>3,274</span>
-                    </div>
-                    <div class="progress progress-xs mb-4">
-                        <div class="progress-bar bg-info" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-
+                    <!-- Domain-wise Requests -->
+                    {{-- @foreach($sale->domains as $domain)
+                        @php
+                            $domainPercentage = ($domain->total_requests / $maxRequests) * 100;
+                        @endphp
+                        <div class="fw-normal d-flex align-items-center mb-2 mt-3">
+                            <p class="mb-0 flex-fill">{{ ucfirst($domain->domain_name) }} Requests</p>
+                            <span>{{ number_format($domain->total_requests) }}</span>
+                        </div>
+                        <div class="progress progress-xs mb-4">
+                            <div class="progress-bar bg-info" role="progressbar"
+                                style="width: {{ min($domainPercentage, 100) }}%;"
+                                aria-valuenow="{{ $domainPercentage }}"
+                                aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                    @endforeach --}}
                 </div>
             </div>
         </div>
+        @endif
+
+
     </div>
     @else
     <div class="row">

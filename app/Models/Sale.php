@@ -7,10 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class Sale extends Model
 {
     protected $fillable = [
-        'user_id', 'plan_id', 'amount',
-        'start_date', 'end_date',
-        'allowed_domains', 'used_domains', 'request_limit',
-        'status'
+        'user_id',
+        'plan_id',
+        'invoice_number',
+        'amount',
+        'start_date',
+        'end_date',
+        'allowed_domains',
+        'used_domains',
+        'request_limit',
+        'total_requests',
+        'status' //'pending','active','expired'
     ];
 
     protected $dates = ['start_date', 'end_date'];

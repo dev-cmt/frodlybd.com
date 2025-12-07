@@ -45,7 +45,7 @@
                     <h5 class="landing-banner-heading text-white mb-3"><span class="text-secondary fw-bold">600+ </span> Users in Bangladesh Rely on Frodly for Easy Parcel Return Management.</h5>
                     <!-- Search Form -->
                     <form class="mb-3 custom-form-group" id="searchForm">
-                        <input type="text" id="phoneInput" class="form-control form-control-lg shadow-sm" placeholder="আপনার অর্ডার ডেলিভারি ডেটা দেখতে ফোন নাম্বার লিখুন এবং সার্চ করুন।" aria-label="Phone number">
+                        <input type="text" id="phoneInput" class="form-control form-control-lg shadow-sm" placeholder="আপনার অর্ডার ডেলিভারি ডেটা দেখতে ফোন নাম্বার লিখুন এবং সার্চ করুন।" aria-label="Phone number" value="{{ optional(auth()->user())->phone }}">
                         <div class="custom-form-btn">
                             <button class="btn btn-primary border-0" type="submit" id="submit-btn"><i class="bi bi-search me-2"></i> Search</button>
                         </div>

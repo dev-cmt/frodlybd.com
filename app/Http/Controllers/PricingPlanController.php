@@ -12,7 +12,7 @@ class PricingPlanController extends Controller
     }
 
     public function store(Request $request) {
-        $data = $request->only(['name','domain_count','price','regular_price','billing_cycle','status','description']);
+        $data = $request->only(['name','domain_count', 'request_count','price','regular_price','billing_cycle','status','description']);
 
         $features_text = $request->features_text ?? [];
         $features_active = $request->features_active ?? [];

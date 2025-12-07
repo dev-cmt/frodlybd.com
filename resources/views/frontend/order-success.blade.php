@@ -57,7 +57,7 @@
         <div class="success-icon">✅</div>
         <div class="success-title">অর্ডার সফলভাবে সম্পন্ন হয়েছে!</div>
         <div class="success-text">
-            আপনার অর্ডার <strong>#{{ $sale->id }}</strong> সফলভাবে গ্রহণ করা হয়েছে।
+            আপনার অর্ডার <strong>#{{ $sale->invoice_number }}</strong> সফলভাবে গ্রহণ করা হয়েছে।
             বিস্তারিত তথ্য নিচে দেওয়া হলো।
         </div>
 
@@ -78,6 +78,6 @@
         </div>
 
         <a href="{{ route('home') }}" class="btn btn-primary btn-home">🏠 হোমে ফিরে যান</a>
-        <a href="{{ route('admin.client-plans.index') }}" class="btn btn-primary btn-home">📄 বিস্তারিত দেখুন</a>
+        <a href="{{ route('admin.your-package.index') }}" class="btn btn-primary btn-home">📄 বিস্তারিত দেখুন</a>
     </div>
 @endsection

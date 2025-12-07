@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class DomainRecord extends Model
 {
     protected $fillable = [
-        'sale_id', 'domain_name', 'status'
+        'sale_id', 'domain_name', 'total_requests', 'status'
     ];
 
     public function sale()

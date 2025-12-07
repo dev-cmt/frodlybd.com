@@ -26,7 +26,8 @@
                 <div class="p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="fs-18 fw-semibold">{{ $plan->name }}</div>
-                        <div><span class="badge bg-success-transparent">{{ $plan->domain_count }} Domains</span></div>
+                        {{-- <div><span class="badge bg-success-transparent">{{ $plan->domain_count }} Domains</span></div> --}}
+                        <div><span class="badge bg-success-transparent">{{ $plan->request_count }} Requests</span></div>
                     </div>
                     <div class="fs-25 fw-bold mb-1">${{ $plan->price }}
                         <sub class="text-muted fw-semibold fs-11 ms-1">/ {{ ucfirst($plan->billing_cycle) }}</sub>
@@ -47,7 +48,8 @@
                         <button class="btn btn-primary-light btn-wave waves-effect waves-light edit-plan"
                             data-id="{{ $plan->id }}"
                             data-name="{{ $plan->name }}"
-                            data-domain_count="{{ $plan->domain_count }}"
+                            {{-- data-domain_count="{{ $plan->domain_count }}" --}}
+                            data-request_count="{{ $plan->request_count }}"
                             data-price="{{ $plan->price }}"
                             data-regular_price="{{ $plan->regular_price }}"
                             data-billing_cycle="{{ $plan->billing_cycle }}"
@@ -85,9 +87,12 @@
                         <div class="col-md-6 mb-3"><label class="form-label">Name *</label>
                             <input type="text" name="name" id="name" class="form-control" required>
                         </div>
-                        <div class="col-md-6 mb-3"><label class="form-label">Domain Count</label>
-                            <input type="number" name="domain_count" id="domain_count" class="form-control">
+                        <div class="col-md-6 mb-3"><label class="form-label">Request Limit</label>
+                            <input type="number" name="request_count" id="request_count" class="form-control">
                         </div>
+                        {{-- <div class="col-md-6 mb-3"><label class="form-label">Domain Count</label>
+                            <input type="number" name="domain_count" id="domain_count" class="form-control">
+                        </div> --}}
                         <div class="col-md-6 mb-3"><label class="form-label">Price *</label>
                             <input type="number" step="0.01" name="price" id="price" class="form-control" required>
                         </div>
@@ -171,7 +176,8 @@ $(document).ready(function(){
         // 1. Get data from attributes
         let id = $btn.data('id');
         let name = $btn.data('name');
-        let domain_count = $btn.data('domain_count');
+        // let domain_count = $btn.data('domain_count');
+        let request_count = $btn.data('request_count');
         let price = $btn.data('price');
         let regular_price = $btn.data('regular_price');
         let billing_cycle = $btn.data('billing_cycle');
@@ -189,7 +195,8 @@ $(document).ready(function(){
         // 3. Populate form fields
         $('#plan_id').val(id);
         $('#name').val(name);
-        $('#domain_count').val(domain_count);
+        // $('#domain_count').val(domain_count);
+        $('#request_count').val(request_count);
         $('#price').val(price);
         $('#regular_price').val(regular_price);
         $('#billing_cycle').val(billing_cycle);

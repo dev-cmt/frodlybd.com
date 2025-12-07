@@ -14,6 +14,15 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\YourPackageController;
 use App\Http\Controllers\SaleController;
 
+Route::get('/sync-permissions', [AdminController::class, 'resyncPermissions'])->name('sync.permissions');
+Route::get('/cc', function () {
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    \Illuminate\Support\Facades\Artisan::call('config:clear');
+    \Illuminate\Support\Facades\Artisan::call('view:clear');
+    \Illuminate\Support\Facades\Artisan::call('route:clear');
+    \Illuminate\Support\Facades\Artisan::call('config:cache');
+    return 'Cleared!';
+});
 
 Route::get('/', [HomeController::class, 'welcome'])->name('home');
 Route::get('/checkout/{plan?}', [HomeController::class, 'checkout'])->name('checkout');
@@ -62,6 +71,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/sales/store', [SaleController::class, 'store'])->name('sales.store');
     Route::put('/sales/{id}', [SaleController::class, 'update'])->name('sales.update'); // <-- Add this
     Route::delete('/sales/{id}', [SaleController::class, 'destroy'])->name('sales.destroy');
+    Route::post('/sales/{sale}/upgrade', [SaleController::class, 'upgrade'])->name('sales.upgrade');
+
 
     // Developer API
     Route::get('/developer-api', [DeveloperApiController::class, 'index'])->name('developer-api.index');

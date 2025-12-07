@@ -12,16 +12,15 @@ class EnsureTokenIsValid
 {
     public function handle(Request $request, Closure $next)
     {
-        // Get token from header or query param
+        // 1️⃣ Get token from header, query, or authenticated user
         $token = $request->header('X-API-TOKEN') ?? $request->query('token');
 
         if (!$token) {
             return response()->json(['error' => 'API Token missing'], 401);
         }
 
-        // Retrieve user by token
+        // 2️⃣ Retrieve user by token
         $user = User::where('api_token', $token)->first();
-
         if (!$user) {
             return response()->json([
                 'status' => false,
@@ -29,9 +28,37 @@ class EnsureTokenIsValid
             ], 401);
         }
 
-        // Authenticate this user for the request
-        // auth()->setUser($user);
+        // 3️⃣ Get the first sale of the user
+        $sale = $user->sales()->first();
+        if (!$sale) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No active sale found for this user'
+            ], 403);
+        }
 
+        // 4️⃣ Get domain record (only if sale exists)
+        // $host = parse_url($request->header('Origin') ?? '', PHP_URL_HOST) ?? parse_url($request->header('Referer') ?? '', PHP_URL_HOST) ?? $request->header('X-CLIENT-DOMAIN');
+        // $domainRecord = $sale->domains()->where('domain_name', 'demo.prodevsltd.xyz')->first();
+        // if (!$domainRecord) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'Domain not authorized for this API token'
+        //     ], 403);
+        // }
+
+        // 5️⃣ Domain request limit check
+        if ($sale->total_requests >= $sale->request_limit) {
+            return response()->json([
+                'status' => false,
+                'message' => 'API request limit reached for this package'
+            ], 403);
+        }
+
+        // 6️⃣ Increment total_requests by 1
+        $sale->increment('total_requests');
+
+        // 7️⃣ Proceed with the request
         return $next($request);
     }
 }

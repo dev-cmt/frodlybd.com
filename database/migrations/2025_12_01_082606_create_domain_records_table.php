@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('sale_id')->constrained('sales')->onDelete('cascade');
             $table->string('domain_name');
+            $table->integer('total_requests')->default(0);
             $table->enum('status', ['active','inactive'])->default('active');
             $table->timestamps();
+
+            $table->index('domain_name');
         });
     }
 
