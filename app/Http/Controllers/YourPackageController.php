@@ -29,7 +29,7 @@ class YourPackageController extends Controller
             return redirect()->back()->with('error', 'Unauthorized');
         }
 
-        if ($sale->used_domains >= $sale->allowed_domains) {
+        if ($sale->domains_count >= $sale->allowed_domains) {
             return redirect()->back()->with('error', 'Max domains reached');
         }
 
@@ -43,7 +43,7 @@ class YourPackageController extends Controller
             'status' => 'active',
         ]);
 
-        $sale->increment('used_domains');
+        $sale->increment('domains_count');
 
         return redirect()->back()->with('success', 'Domain added successfully.');
     }
@@ -68,7 +68,7 @@ class YourPackageController extends Controller
             return redirect()->back()->with('error', 'Unauthorized access.');
         }
         $domain->delete();
-        $domain->sale->decrement('used_domains');
+        $domain->sale->decrement('domains_count');
 
         return redirect()->back()->with('success', 'Domain deleted successfully.');
     }

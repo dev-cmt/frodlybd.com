@@ -79,12 +79,26 @@ class HomeController extends Controller
         // Fetch the plan
         $plan = PricingPlan::findOrFail($request->plan_id);
 
+        // Recalculate end date if package changed
+        $start = Carbon::parse($request->start_date ?? now());
+        $periods = [
+            'monthly' => 1,
+            'quarterly' => 3,
+            'half-yearly' => 6,
+            'yearly' => 12,
+            'lifetime' => null,
+        ];
+        $months = $periods[$plan->billing_cycle] ?? 0;
+        $end = $months ? $start->copy()->addMonths($months) : null;
+        $start_date = $start->toDateString();
+        $end_date = $end?->toDateString();
+
         // Generate unique invoice number
         do {
-            $year  = date('y');
             $month = date('m');
-            $random = strtoupper(substr(bin2hex(random_bytes(2)), 0, 4));
-            $invoice_no = "INV-$year$month$random";
+            $day = date('d');
+            $random = strtoupper(substr(bin2hex(random_bytes(2)), 0, 3));
+            $invoice_no = "FRD$day$month$random";
         } while (DB::table('sales')->where('invoice_number', $invoice_no)->exists());
 
         // Create sale record
@@ -93,11 +107,11 @@ class HomeController extends Controller
             'plan_id'        => $plan->id,
             'invoice_number' => $invoice_no,
             'amount'         => $plan->price,
-            'start_date'     => Carbon::now(),
-            'end_date'       => Carbon::now()->addMonth(),
+            'start_date'     => $start_date,
+            'end_date'       => $end_date,
             'status'         => 'pending', // default status
-            'allowed_domains'=> $plan->domain_count,
-            'used_domains'   => 0
+            'allowed_domains'=> $plan->domain_limit,
+            'allowed_requests'=> $plan->request_limit,
         ]);
 
         // Handle Payment Method

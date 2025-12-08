@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name'); // Free, Team, etc.
             $table->string('slug')->unique(); // For tag like "For Individuals"
-            $table->integer('domain_count')->nullable(); // For tag like "For Individuals"
+            $table->integer('domain_limit')->default(0); // For tag like "For Individuals"
+            $table->integer('request_limit')->default(0); // For tag like "For Individuals"
             $table->decimal('price', 10, 2)->default(0);
             $table->decimal('regular_price', 10, 2)->default(0);
             $table->string('billing_cycle')->default('monthly'); // monthly or yearly

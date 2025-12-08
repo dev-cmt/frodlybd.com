@@ -29,7 +29,7 @@ class EnsureTokenIsValid
         }
 
         // 3️⃣ Get the first sale of the user
-        $sale = $user->sales()->first();
+        $sale = $user->sales()->where('status', 'active')->first();
         if (!$sale) {
             return response()->json([
                 'status' => false,
@@ -48,15 +48,16 @@ class EnsureTokenIsValid
         // }
 
         // 5️⃣ Domain request limit check
-        if ($sale->total_requests >= $sale->request_limit) {
+        if ($sale->requests_count > $sale->allowed_requests) {
             return response()->json([
                 'status' => false,
                 'message' => 'API request limit reached for this package'
             ], 403);
         }
 
+
         // 6️⃣ Increment total_requests by 1
-        $sale->increment('total_requests');
+        $sale->increment('requests_count');
 
         // 7️⃣ Proceed with the request
         return $next($request);

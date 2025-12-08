@@ -59,7 +59,7 @@
                 </div>
                 <div class="card-body">
                     <!-- Add Domain Form -->
-                    @if($sale->used_domains < $sale->allowed_domains)
+                    @if($sale->domains_count < $sale->allowed_domains)
                         <form action="{{ route('admin.domains.store') }}" method="POST" class="mb-3 d-flex">
                             @csrf
                             <input type="hidden" name="sale_id" value="{{ $sale->id }}">
@@ -152,16 +152,16 @@
 
                     @php
                         // Total requests and remaining %
-                        $totalRequests = $sale->domains->sum('total_requests');
-                        $maxRequests = $sale->request_limit ?? 1; // avoid division by zero
-                        $remainingRequests = max($maxRequests - $totalRequests, 0);
-                        $remainingPercentage = ($remainingRequests / $maxRequests) * 100;
-                        $totalPercentage = ($totalRequests / $maxRequests) * 100;
+                        $allowedRequests = $sale->allowed_requests ?? 0;
+                        $requestsCount = $sale->requests_count ?? 1;
+                        $remainingRequests = max($allowedRequests - $requestsCount, 0);
+                        $remainingPercentage = ($remainingRequests / $allowedRequests) * 100;
+                        $totalPercentage = ($requestsCount / $allowedRequests) * 100;
                     @endphp
 
                     <!-- Total Requests & Remaining % -->
                     <div class="d-flex align-items-center mb-2">
-                        <span class="fs-5 fw-semibold me-2">Limit: {{ number_format($maxRequests) }}</span>
+                        <span class="fs-5 fw-semibold me-2">Limit: {{ number_format($allowedRequests) }}</span>
                         <span class="fs-12 text-success ms-auto">
                             <i class="ti ti-trending-up me-1 d-inline-block"></i>
                             {{ number_format($remainingPercentage, 1) }}% left
@@ -181,7 +181,7 @@
 
                     <div class="fw-normal d-flex align-items-center mb-2 mt-3">
                         <p class="mb-0 flex-fill">Total Requests</p>
-                        <span>{{ number_format($totalRequests) }}</span>
+                        <span>{{ number_format($requestsCount) }}</span>
                     </div>
                     <div class="progress progress-xs mb-4">
                         <div class="progress-bar {{ $barColor }}" role="progressbar"
@@ -194,7 +194,7 @@
                     <!-- Domain-wise Requests -->
                     {{-- @foreach($sale->domains as $domain)
                         @php
-                            $domainPercentage = ($domain->total_requests / $maxRequests) * 100;
+                            $domainPercentage = ($domain->total_requests / $requestsCount) * 100;
                         @endphp
                         <div class="fw-normal d-flex align-items-center mb-2 mt-3">
                             <p class="mb-0 flex-fill">{{ ucfirst($domain->domain_name) }} Requests</p>

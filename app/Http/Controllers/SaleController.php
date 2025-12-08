@@ -47,10 +47,10 @@ class SaleController extends Controller
 
         // Generate unique invoice number
         do {
-            $year  = date('y');
             $month = date('m');
-            $random = strtoupper(substr(bin2hex(random_bytes(2)), 0, 4));
-            $invoice_no = "INV-$year$month$random";
+            $day = date('d');
+            $random = strtoupper(substr(bin2hex(random_bytes(2)), 0, 3));
+            $invoice_no = "FRD$day$month$random";
         } while (DB::table('sales')->where('invoice_number', $invoice_no)->exists());
 
         Sale::create([
@@ -60,9 +60,8 @@ class SaleController extends Controller
             'amount'          => $plan->price,
             'start_date'      => $start_date,
             'end_date'        => $end_date,
-            'allowed_domains' => $plan->domain_count,
-            'used_domains'    => 0,
-            'total_requests'    => 0,
+            'allowed_domains' => $plan->domain_limit,
+            'allowed_requests'=> $plan->request_limit,
             'status'          => 'active',
         ]);
 
@@ -103,9 +102,8 @@ class SaleController extends Controller
             'amount'          => $plan->price,
             'start_date'      => $start_date,
             'end_date'        => $end_date,
-            'allowed_domains' => $plan->domain_count,
-            'used_domains'    => 0,
-            'total_requests'  => 0,
+            'allowed_domains' => $plan->domain_limit,
+            'allowed_requests'=> $plan->request_limit,
             'status'          => 'active',
         ]);
 
@@ -126,14 +124,15 @@ class SaleController extends Controller
     {
         $request->validate([
             'end_date' => 'required|date',
-            'request_limit' => 'required|integer|min:1',
+            'allowed_requests' => 'required|integer|min:1',
             'allowed_domains' => 'required|integer|min:1',
         ]);
 
         $sale->update([
             'end_date' => $request->end_date,
-            'request_limit' => $request->request_limit,
+            'allowed_requests' => $request->allowed_requests,
             'allowed_domains' => $request->allowed_domains,
+            'status' => $request->status,
         ]);
 
         return response()->json(['status' => true, 'message' => 'Sale upgraded successfully']);

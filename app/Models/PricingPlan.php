@@ -8,7 +8,7 @@ use \Illuminate\Support\Str;
 class PricingPlan extends Model
 {
     protected $fillable = [
-        'name', 'slug', 'domain_count', 'request_count', 'price', 'regular_price', 'billing_cycle', 'description', 'features', 'status'
+        'name', 'slug', 'domain_limit', 'request_limit', 'price', 'regular_price', 'billing_cycle', 'description', 'features', 'status'
     ];
 
     protected $casts = [

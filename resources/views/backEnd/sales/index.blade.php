@@ -53,7 +53,7 @@
                                     <th>Package Info</th>
                                     <th>Usage</th>
                                     <th>Status</th>
-                                    <th>Actions</th>
+                                    <th class="text-center">Actions</th>
                                 </tr>
                             </thead>
 
@@ -73,10 +73,9 @@
                                         </td>
                                         <td>
                                             <strong>Package:</strong> {{ $sale->plan->name }}<br>
-                                            <strong>Date:</strong> {{ date('d-m-Y', strtotime($sale->start_date)) }} →
-                                            {{ date('d-m-Y', strtotime($sale->end_date)) }}<br>
-                                            <strong>Price:</strong> {{ $sale->plan->price }}<br>
-                                            <strong>Allowed:</strong> {{ $sale->allowed_domains }} Domains
+                                            <strong>Start Date:</strong> {{ date('d-m-Y', strtotime($sale->start_date)) }} <br>
+                                            <strong>End Date:</strong> {{ date('d-m-Y', strtotime($sale->end_date)) }}<br>
+                                            <strong>Price:</strong> {{ $sale->plan->price }}
                                         </td>
                                         <td>
                                             {{-- @if ($sale->domains->isNotEmpty())
@@ -87,9 +86,10 @@
                                                         {{ number_format($domain->total_requests) }}</span><br>
                                                 @endforeach
                                             @endif --}}
-                                            <strong>Total Requests:</strong> {{ $sale->total_requests }}<br>
-                                            <strong>Used Domains:</strong> {{ $sale->used_domains }} / {{ $sale->allowed_domains }}<br>
-                                            <strong>Request Limit:</strong> {{ $sale->request_limit }}
+                                            <strong>Allowed Requests:</strong> {{ number_format($sale->allowed_requests) }}<br>
+                                            <strong>Used Requests:</strong> {{ number_format($sale->requests_count) }}<br>
+                                            <strong>Allowed:</strong> {{ $sale->allowed_domains }} Domains<br>
+                                            <strong>Used:</strong> {{ $sale->domains_count }} Domains
                                         </td>
                                         <td>
                                             <span class="badge
@@ -97,11 +97,12 @@
                                                 {{ ucfirst($sale->status) }}
                                             </span>
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             <button class="btn btn-outline-primary btn-sm upgradePlanBtn"
                                                 data-id="{{ $sale->id }}" data-end_date="{{ $sale->end_date }}"
                                                 data-allowed_domains="{{ $sale->allowed_domains }}"
-                                                data-request_limit="{{ $sale->request_limit }}">
+                                                data-allowed_requests="{{ $sale->allowed_requests }}"
+                                                data-status="{{ $sale->status }}">
                                                 Upgrade
                                             </button>
 
@@ -215,8 +216,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="upgradeRequestLimit" class="form-label">Request Limit</label>
-                            <input type="number" class="form-control" id="upgradeRequestLimit" name="request_limit"
+                            <label for="upgradeAllowedRequests" class="form-label">Allowed Requests</label>
+                            <input type="number" class="form-control" id="upgradeAllowedRequests" name="allowed_requests"
                                 min="1" required>
                         </div>
 
@@ -224,6 +225,14 @@
                             <label for="upgradeAllowedDomains" class="form-label">Allowed Domains</label>
                             <input type="number" class="form-control" id="upgradeAllowedDomains" name="allowed_domains"
                                 min="1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="upgradeStatus" class="form-label">Status</label>
+                            <select name="status" id="upgradeStatus" class="form-select" required>
+                                <option value="active">Active</option>
+                                <option value="expired">Expired</option>
+                                <option value="pending">Pending</option>
+                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -331,13 +340,15 @@
             $('.upgradePlanBtn').on('click', function() {
                 let id = $(this).data('id');
                 let endDate = $(this).data('end_date');
-                let requestLimit = $(this).data('request_limit');
+                let allowedRequests = $(this).data('allowed_requests');
                 let allowedDomains = $(this).data('allowed_domains');
+                let status = $(this).data('status');
 
                 $('#upgradeSaleId').val(id);
                 $('#upgradeEndDate').val(endDate);
-                $('#upgradeRequestLimit').val(requestLimit);
+                $('#upgradeAllowedRequests').val(allowedRequests);
                 $('#upgradeAllowedDomains').val(allowedDomains);
+                $('#upgradeStatus').val(status);
 
                 $('#upgradeSaleModal').modal('show'); // Bootstrap 5 modal
             });

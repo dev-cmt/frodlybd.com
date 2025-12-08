@@ -24,9 +24,9 @@ return new class extends Migration
 
             // Independent domain limits
             $table->integer('allowed_domains')->default(0);
-            $table->integer('used_domains')->default(0);
-            $table->integer('request_limit')->default(0);
-            $table->integer('total_requests')->default(0);
+            $table->integer('domains_count')->default(0);
+            $table->integer('allowed_requests')->default(0);
+            $table->integer('requests_count')->default(0);
 
             $table->enum('status', ['pending','active','expired'])->default('pending');
             $table->timestamps();

@@ -14,9 +14,9 @@ class Sale extends Model
         'start_date',
         'end_date',
         'allowed_domains',
-        'used_domains',
-        'request_limit',
-        'total_requests',
+        'domains_count',
+        'allowed_requests',
+        'requests_count',
         'status' //'pending','active','expired'
     ];
 
