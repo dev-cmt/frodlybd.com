@@ -11,8 +11,8 @@ class FrodlyHelper
     public static function redxLogin(): ?string
     {
         $config = [
-            'phone'      => '01888005092',
-            'password'   => 'babla2k12',
+            'phone'      => '01972431245',
+            'password'   => 'Frodly2025_$',
             'token_file' => public_path('frodly/redx_token.json'),
             'api_base'   => 'https://api.redx.com.bd/v4',
         ];
@@ -46,7 +46,6 @@ class FrodlyHelper
 
     public static function getRedx(string $phone): array
     {
-        // $token = $this->redxLogin();
         // $token = config('frodly.steadfast.token_data');
         $token = self::redxLogin();
         if (!$token) return ['success'=>0,'cancel'=>0,'total'=>0];
@@ -73,8 +72,8 @@ class FrodlyHelper
     public static function steadFastLogin()
     {
         $config = [
-            'email'       => 'unisalemart890@gmail.com',
-            'password'    => 'Babla2k12@#$%',
+            'email'       => 'frodlybd@gmail.com',
+            'password'    => 'Frodly2025_$',
             'cookie_file' => public_path('frodly/steadfast_cookie.txt'),
             'base_url'    => 'https://steadfast.com.bd/login',
         ];
@@ -144,13 +143,13 @@ class FrodlyHelper
     }
 
     // ------------------- PATHAO -------------------
-    public static function pathaoLogin(): ?string
+    public static function pathaoLogin()
     {
         $config = [
-            'email'         => 'stylisfirst@gmail.com',
-            'password'      => 'STYLIS@22bd',
-            'client_id'     => 'APdRlXYaGy',
-            'client_secret' => 'dkWMLtqJbTvOemaWwBwhy6bmDC6zv75AzCbKcqlS',
+            'email'         => 'frodlybd@gmail.com',
+            'password'      => 'Frodly2025_$',
+            'client_id'     => 'JxbojDzagw',
+            'client_secret' => 'zFd506q6ihrAiL2ibnlyAUuqEyNRZ4nIY69UslwB',
             'token_cache'   => public_path('frodly/pathao_token.json'),
             'token_url'     => 'https://api-hermes.pathao.com/aladdin/api/v1/issue-token',
         ];
@@ -204,27 +203,38 @@ class FrodlyHelper
         }
 
         for ($i=0;$i<$maxTries;$i++) {
-            // $token = $this->pathaoLogin();
+            // $token = self::pathaoLogin();
             // $token = config('frodly.pathao.token_data');
-            $token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxMDQyOCIsImp0aSI6IjAxNjMxZjUyZjk2YjU0NzdiMTA3MWM1MjliYjA5MmEwODdjYmViOTYwMjdiMTNhNzk1OTllNTAxMzIwNGY2ZDU3ZjhiYzc4NjVlMDZiMzllIiwiaWF0IjoxNzU3NTA5NDk5LjI4NzUyMiwibmJmIjoxNzU3NTA5NDk5LjI4NzUyNCwiZXhwIjoxNzY1Mjg1NDk5LjI2MDc2OSwic3ViIjoiODYyODciLCJzY29wZXMiOltdfQ.JN-puiH4MIlCHqAquE-aeH73_HKeySLckIMpoW8AiZ2-XgmQm5OKSlcy6RvPvECHyd-amNwzVlV2jmkGgjKtGgOqnDkOXugF9qXuyZE6jUPf8C66wrMm3CIu-Wu3cHJSUOWXQ7N-ZQqX_AcmUjVX_CS0HIvhyQicYoUl_ApCFPKyW5Nnqw6Rzz9FY5Wpoxg_6cUkzkn0TnzJwNumetaLMNcaSDWdJWoH6NYZMxpo-8y5BMBASayI8y7yFaNdVc5MC0O1E6pJNX2tFsBILJIG1_D-aOU6Ubn22MqPJG3Ld5XS8HX_Wv-8h_i9DuHc_LNwaj0pnclMsOizr2DOdTyByx4CVHEnfmw6Z8OuIZN8Qonr6Q3zlysinrxEp88if1OcahuGP36TC5RPx5fO1msaev0MUpVDYmdCs4kCXlpOrycM0lQSzrlY79L9VNkWXi6PRL9jzmlwq29PoQ0B9aPesKt-nxBJ7__Wr49rfEtCWI2hchIXiHKwQAMxasSAsJSLx8RrL4VaRe2i_A2QzuDqgFMvxfxrxqKvXPNq5H_mRC3h9Ct_M_ZouuhHu8xeFQGa-r0W0XjwcfB22hNOdOaXXLol5kS5gwHn6dH6SW93KT-mchGRvryKUY-QWn2E37wOYA-Wrt33G-OGNJgASpeO13Q9Hzg2RSwz4wFWnDHnoSw';
-
+            $token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNjgxMDYiLCJhdWQiOlsiMyJdLCJleHAiOjE3Njg3MzU4MDYsIm5iZiI6MTc2MDk1OTgwNiwiaWF0IjoxNzYwOTU5ODA2LCJqdGkiOiIyNDg0ZDI1YWYwMGQ1YzdjZjUxODYyMDFlZTU3NGRmMjBkOGIxYjAwY2E2ODhhODgyYjk4YzI4ZjFhMmM3YWM4IiwibWVyY2hhbnRfaWQiOiJZcWFRMFkzR2VuIiwic2NvcGVzIjpbXX0.i0X8uPlSxlBoinFuHPjYwSnkY8QARCefPLyvVexH8SeRO5fLjaHCh1gkh33fXdJGn5qTnIKomaDT91vgpKjsQbfMMHwJXCN2cQ1Ix-DLcMbSvfOhJST2UT1LTjHDvYW_2ne4DHGGdeYQpdJgtfoTmRm6Doz4gPS9kJ0O4Cl_CxFKQ2pMQP4niDTe64kR_Mh88SQWiojKDuFdcYjoYyiwrRj8CL-Wrgf660192I9o3BPpp2shNyzWCMIlKep0Y_mRiCXqHXKCY2uFvtWNwqAeyfLUBMFVbT2lraVJ-JmJtjKrey2O_BCkneX4iBnQ2y1rW8JJ3qbz4-KXB4heai196hiGyxvblrSvMm_BdLWH50bPsQpMQBBbdL8R3kxgGZjErPc6Z2mM35X4aRI8Nm-vz-7SpOi96bUyUezrNgnWVJ0AoFzEFyXlUR3r0xWPYM7oh4394JOTTT9CvpJFryW5hpluG79czUzL0ru9IRjDfgi9FzTzYq0ugwFzeMnuH_494Xk6ahcVyV81ZYeuYwacW1LYY9q62pk7yZYsV2rGd7TjttlEeV_JxbyomR-Cn6oJGCRXBvNdw__YalkvyYg5IbjSlRFB9KgcG0EBEEBzWiA9WjWqlE0w9usj3UJMqSuLm0rSOfaKdw0cQMqCUH37Wn59uTKrTyB-wR4WZlVbrzE';
 
             if (!$token) continue;
 
-            $response = Http::withHeaders([
-                'Accept'=>'application/json',
-                'Content-Type'=>'application/json',
-                'Authorization'=>'Bearer '.$token
-            ])
-            ->timeout($timeout)
-            ->post("{$baseUrl}/user/success", ['phone'=>$phoneNumber]);
+            $url = "{$baseUrl}/user/success";
+            $data = json_encode(['phone' => $phoneNumber]);
 
-            if ($response->successful()) {
-                $res = $response->json();
-                $success = $res['data']['customer']['successful_delivery'] ?? 0;
-                $total   = $res['data']['customer']['total_delivery'] ?? 0;
+            $ch = curl_init($url);
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POST           => true,
+                CURLOPT_POSTFIELDS     => $data,
+                CURLOPT_HTTPHEADER     => [
+                    'Accept: application/json',
+                    'Content-Type: application/json',
+                    "Authorization: Bearer $token"
+                ],
+                CURLOPT_TIMEOUT        => $timeout,
+            ]);
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
 
-                return ['success'=>$success,'cancel'=>$total-$success,'total'=>$total];
+            if ($httpCode >= 200 && $httpCode < 300 && $res = json_decode($response, true)) {
+                if (isset($res['data']['customer'])) {
+                    $success = $res['data']['customer']['successful_delivery'] ?? 0;
+                    $total = $res['data']['customer']['total_delivery'] ?? 0;
+
+                    return ['success' => $success, 'cancel' => $total - $success, 'total' => $total];
+                }
             }
         }
 
