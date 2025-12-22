@@ -135,8 +135,6 @@ $newLeads = DB::table('users')
 @endif
 
 
-
-
 <!---CHECKER-->
 <section class="bg-primary pt-2 mt-3">
     <div class="container main-banner-container">

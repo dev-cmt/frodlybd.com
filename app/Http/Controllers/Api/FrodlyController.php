@@ -54,7 +54,6 @@ class FrodlyController extends Controller
     }
 
 
-
     public function check(Request $request)
     {
         $request->validate([
@@ -62,6 +61,30 @@ class FrodlyController extends Controller
         ]);
 
         $phone = $request->input('phone');
+
+        dd(FrodlyHelper::getSteadFast($phone));
+        
+        // ✅ LOG REQUEST (time + phone + ip)
+        Log::channel('courier')->info('Courier API request', [
+            'phone' => $phone,
+            'time'  => now()->toDateTimeString(),
+            'ip'    => $request->ip(),
+        ]);
+        
+        $lockKey = 'courier_lock_' . $phone;
+        
+        // ⏳ WAIT until lock is free (max wait handled naturally)
+        $startTime = microtime(true);
+        while (Cache::has($lockKey)) {
+            usleep(100000); // 0.1s sleep
+            // Optional timeout: prevent infinite wait
+            if ((microtime(true) - $startTime) > 10) {
+                break;
+            }
+        }
+    
+        // Lock for 5 seconds
+        Cache::put($lockKey, true, 5);
 
         // Call courier methods
         $results = [
