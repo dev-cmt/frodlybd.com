@@ -18,3 +18,8 @@ Route::post('/token/check-courier', [FrodlyController::class, 'checkManualy']);
 
 
 Route::post('/check-courier', [FrodlyController::class, 'check'])->middleware('token.valid');
+
+
+// Jobs
+Route::post('/courier/check', [FrodlyController::class, 'checkInfo']);
+Route::get('/courier/result/{phone}', [FrodlyController::class, 'result']);

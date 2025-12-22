@@ -8,8 +8,53 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Helpers\FrodlyHelper;
 
+use App\Jobs\FrodlyJob;
+use Illuminate\Support\Facades\Cache;
+
 class FrodlyController extends Controller
 {
+
+    public function checkInfo(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required|regex:/^\d{11}$/'
+        ]);
+
+        $phone = $request->phone;
+
+        // Remove old cache if exists
+        Cache::forget('courier_check_' . $phone);
+
+        // Dispatch queue job
+        FrodlyJob::dispatch($phone);
+
+        return response()->json([
+            'status'  => 202,
+            'message' => 'Courier check is processing',
+            'key'     => 'courier_check_' . $phone
+        ]);
+    }
+
+    // 2️⃣ Get result
+    public function result($phone)
+    {
+        $data = Cache::get('courier_check_' . $phone);
+
+        if (!$data) {
+            return response()->json([
+                'status' => 202,
+                'message' => 'Processing...'
+            ]);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $data
+        ]);
+    }
+
+
+
     public function check(Request $request)
     {
         $request->validate([
