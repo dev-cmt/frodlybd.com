@@ -72,8 +72,8 @@ class FrodlyHelper
     public static function steadFastLogin()
     {
         $config = [
-            'email'       => 'frodlybd@gmail.com',
-            'password'    => 'Frodly2025_$',
+            'email'       => 'dailyneedbd0@gmail.com', //'bornoshop24@gmail.com', //'frodlybd@gmail.com',
+            'password'    => 'DnB2025$',//'Aq1w2e3r4t5',  // 'Frodly2025_$',
             'cookie_file' => public_path('frodly/steadfast_cookie.txt'),
             'base_url'    => 'https://steadfast.com.bd/login',
         ];
@@ -134,6 +134,10 @@ class FrodlyHelper
         curl_close($ch);
 
         $data = json_decode($response, true);
+
+        // if (!empty($data['error'])) {
+        //     Log::info('API Response', $data);
+        // }
 
         return [
             'success' => $data['total_delivered'] ?? 0,
@@ -203,9 +207,9 @@ class FrodlyHelper
         }
 
         for ($i=0;$i<$maxTries;$i++) {
-            // $token = self::pathaoLogin();
+            $token = self::pathaoLogin();
             // $token = config('frodly.pathao.token_data');
-            $token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNjgxMDYiLCJhdWQiOlsiMyJdLCJleHAiOjE3Njg3MzU4MDYsIm5iZiI6MTc2MDk1OTgwNiwiaWF0IjoxNzYwOTU5ODA2LCJqdGkiOiIyNDg0ZDI1YWYwMGQ1YzdjZjUxODYyMDFlZTU3NGRmMjBkOGIxYjAwY2E2ODhhODgyYjk4YzI4ZjFhMmM3YWM4IiwibWVyY2hhbnRfaWQiOiJZcWFRMFkzR2VuIiwic2NvcGVzIjpbXX0.i0X8uPlSxlBoinFuHPjYwSnkY8QARCefPLyvVexH8SeRO5fLjaHCh1gkh33fXdJGn5qTnIKomaDT91vgpKjsQbfMMHwJXCN2cQ1Ix-DLcMbSvfOhJST2UT1LTjHDvYW_2ne4DHGGdeYQpdJgtfoTmRm6Doz4gPS9kJ0O4Cl_CxFKQ2pMQP4niDTe64kR_Mh88SQWiojKDuFdcYjoYyiwrRj8CL-Wrgf660192I9o3BPpp2shNyzWCMIlKep0Y_mRiCXqHXKCY2uFvtWNwqAeyfLUBMFVbT2lraVJ-JmJtjKrey2O_BCkneX4iBnQ2y1rW8JJ3qbz4-KXB4heai196hiGyxvblrSvMm_BdLWH50bPsQpMQBBbdL8R3kxgGZjErPc6Z2mM35X4aRI8Nm-vz-7SpOi96bUyUezrNgnWVJ0AoFzEFyXlUR3r0xWPYM7oh4394JOTTT9CvpJFryW5hpluG79czUzL0ru9IRjDfgi9FzTzYq0ugwFzeMnuH_494Xk6ahcVyV81ZYeuYwacW1LYY9q62pk7yZYsV2rGd7TjttlEeV_JxbyomR-Cn6oJGCRXBvNdw__YalkvyYg5IbjSlRFB9KgcG0EBEEBzWiA9WjWqlE0w9usj3UJMqSuLm0rSOfaKdw0cQMqCUH37Wn59uTKrTyB-wR4WZlVbrzE';
+            // $token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNjgxMDYiLCJhdWQiOlsiMyJdLCJleHAiOjE3Njg3MzU4MDYsIm5iZiI6MTc2MDk1OTgwNiwiaWF0IjoxNzYwOTU5ODA2LCJqdGkiOiIyNDg0ZDI1YWYwMGQ1YzdjZjUxODYyMDFlZTU3NGRmMjBkOGIxYjAwY2E2ODhhODgyYjk4YzI4ZjFhMmM3YWM4IiwibWVyY2hhbnRfaWQiOiJZcWFRMFkzR2VuIiwic2NvcGVzIjpbXX0.i0X8uPlSxlBoinFuHPjYwSnkY8QARCefPLyvVexH8SeRO5fLjaHCh1gkh33fXdJGn5qTnIKomaDT91vgpKjsQbfMMHwJXCN2cQ1Ix-DLcMbSvfOhJST2UT1LTjHDvYW_2ne4DHGGdeYQpdJgtfoTmRm6Doz4gPS9kJ0O4Cl_CxFKQ2pMQP4niDTe64kR_Mh88SQWiojKDuFdcYjoYyiwrRj8CL-Wrgf660192I9o3BPpp2shNyzWCMIlKep0Y_mRiCXqHXKCY2uFvtWNwqAeyfLUBMFVbT2lraVJ-JmJtjKrey2O_BCkneX4iBnQ2y1rW8JJ3qbz4-KXB4heai196hiGyxvblrSvMm_BdLWH50bPsQpMQBBbdL8R3kxgGZjErPc6Z2mM35X4aRI8Nm-vz-7SpOi96bUyUezrNgnWVJ0AoFzEFyXlUR3r0xWPYM7oh4394JOTTT9CvpJFryW5hpluG79czUzL0ru9IRjDfgi9FzTzYq0ugwFzeMnuH_494Xk6ahcVyV81ZYeuYwacW1LYY9q62pk7yZYsV2rGd7TjttlEeV_JxbyomR-Cn6oJGCRXBvNdw__YalkvyYg5IbjSlRFB9KgcG0EBEEBzWiA9WjWqlE0w9usj3UJMqSuLm0rSOfaKdw0cQMqCUH37Wn59uTKrTyB-wR4WZlVbrzE';
 
             if (!$token) continue;
 
@@ -227,6 +231,8 @@ class FrodlyHelper
             $response = curl_exec($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
+
+            // dd($response, $httpCode);
 
             if ($httpCode >= 200 && $httpCode < 300 && $res = json_decode($response, true)) {
                 if (isset($res['data']['customer'])) {
