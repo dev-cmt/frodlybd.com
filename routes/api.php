@@ -16,4 +16,5 @@ Route::middleware('auth:api')->group(function () {
 Route::post('/token/check-courier', [FrodlyController::class, 'checkManualy']);
 
 
-Route::post('/check-courier', [FrodlyController::class, 'check'])->middleware('token.valid');
+// Route::post('/check-courier', [FrodlyController::class, 'check'])->middleware('token.valid');
+Route::post('/check-courier', [FrodlyController::class, 'checkJob']);
