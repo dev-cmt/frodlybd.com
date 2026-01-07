@@ -22,20 +22,120 @@
 </style>
 @endpush
 
+@php
+use Illuminate\Support\Facades\DB;
+
+$totalClients = DB::table('users')->where('is_admin', 0)->count();
+$activePackageCount = DB::table('pricing_plans')->where('status', 1)->count();
+$totalRequests = DB::table('sales')->sum('requests_count');
+$newLeads = DB::table('users')
+    ->where('is_admin', 0)
+    ->whereMonth('created_at', now()->month)
+    ->whereYear('created_at', now()->year)
+    ->count();
+@endphp
+
+
 @section('content')
-{{-- <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
+@if (Auth::user()->is_admin)
+<div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
     <h1 class="page-title fw-semibold fs-18 mb-0">
         Welcome {{ Auth::user()->name }}
-        ({{ ucfirst(Auth::user()->getRoleNames()->first()) }} Dashboard)
+        {{-- ({{ ucfirst(Auth::user()->getRoleNames()->first()) }} Dashboard) --}}
     </h1>
     <nav>
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
         </ol>
     </nav>
-</div> --}}
+</div>
+
+<div class="row">
+
+    {{-- Total Requests --}}
+    <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6">
+        <div class="card custom-card hrm-main-card primary">
+            <div class="card-body">
+                <div class="d-flex align-items-top">
+                    <div class="me-3">
+                        <span class="avatar bg-primary">
+                            <i class="ri-service-line fs-18"></i>
+                        </span>
+                    </div>
+                    <div class="flex-fill">
+                        <span class="fw-semibold text-muted d-block mb-2">Total Requests</span>
+                        <h5 class="fw-semibold mb-2">{{ number_format($totalRequests) }}</h5>
+                        <span class="badge bg-primary-transparent">All Time</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {{-- Total Clients --}}
+    <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6">
+        <div class="card custom-card hrm-main-card secondary">
+            <div class="card-body">
+                <div class="d-flex align-items-top">
+                    <div class="me-3">
+                        <span class="avatar bg-secondary">
+                            <i class="ri-team-line fs-18"></i>
+                        </span>
+                    </div>
+                    <div class="flex-fill">
+                        <span class="fw-semibold text-muted d-block mb-2">Total Clients</span>
+                        <h5 class="fw-semibold mb-2">{{ number_format($totalClients) }}</h5>
+                        <span class="badge bg-secondary-transparent">All Time</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Active Packages --}}
+    <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6">
+        <div class="card custom-card hrm-main-card warning">
+            <div class="card-body">
+                <div class="d-flex align-items-top">
+                    <div class="me-3">
+                        <span class="avatar bg-warning">
+                            <i class='bx bx-show-alt fs-18'></i>
+                        </span>
+                    </div>
+                    <div class="flex-fill">
+                        <span class="fw-semibold text-muted d-block mb-2">Active Packages</span>
+                        <h5 class="fw-semibold mb-2">{{ number_format($activePackageCount) }}</h5>
+                        <span class="badge bg-warning-transparent">Active</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- New Leads --}}
+    <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-6">
+        <div class="card custom-card hrm-main-card danger">
+            <div class="card-body">
+                <div class="d-flex align-items-top">
+                    <div class="me-3">
+                        <span class="avatar bg-danger">
+                            <i class="ri-contacts-line fs-18"></i>
+                        </span>
+                    </div>
+                    <div class="flex-fill">
+                        <span class="fw-semibold text-muted d-block mb-2">New Leads</span>
+                        <h5 class="fw-semibold mb-2">{{ number_format($newLeads) }}</h5>
+                        <span class="badge bg-danger-transparent">This Month</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 
 
+<!---CHECKER-->
 <section class="bg-primary pt-2 mt-3">
     <div class="container main-banner-container">
         <div class="row justify-content-center text-center">

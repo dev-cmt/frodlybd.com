@@ -8,35 +8,9 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\FrodlyHelper;
-use App\Jobs\FrodlyJob;
-use Carbon\Carbon;
 
 class FrodlyController extends Controller
 {
-    public function checkJob(Request $request)
-    {
-        $request->validate([
-            'phone' => 'required|regex:/^\d{11}$/',
-        ]);
-
-        $webhook = $request->header('X-Webhook-URL');
-
-        // Get last scheduled job time
-        $lastJobTime = DB::table('jobs')->max('available_at');
-        $delayAt = $lastJobTime ? Carbon::createFromTimestamp($lastJobTime)->addSeconds(10) : now();
-
-        FrodlyJob::dispatch(
-            $request->phone,
-            $webhook
-        ); //->delay($delayAt);
-
-        return response()->json([
-            'status' => 202,
-            'message' => 'Queued with guaranteed 10s gap',
-            'run_at' => $delayAt->toDateTimeString(),
-        ]);
-    }
-
     public function check(Request $request)
     {
         sleep(10);
@@ -46,6 +20,30 @@ class FrodlyController extends Controller
         ]);
 
         $phone = $request->input('phone');
+
+        dd(FrodlyHelper::getSteadFast($phone));
+
+        // ✅ LOG REQUEST (time + phone + ip)
+        Log::channel('courier')->info('Courier API request', [
+            'phone' => $phone,
+            'time'  => now()->toDateTimeString(),
+            'ip'    => $request->ip(),
+        ]);
+
+        $lockKey = 'courier_lock_' . $phone;
+
+        // ⏳ WAIT until lock is free (max wait handled naturally)
+        $startTime = microtime(true);
+        while (Cache::has($lockKey)) {
+            usleep(100000); // 0.1s sleep
+            // Optional timeout: prevent infinite wait
+            if ((microtime(true) - $startTime) > 10) {
+                break;
+            }
+        }
+
+        // Lock for 5 seconds
+        Cache::put($lockKey, true, 5);
 
         // Call courier methods
         $results = [
